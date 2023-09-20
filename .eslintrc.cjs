@@ -30,6 +30,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react'],
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'linebreak-style': 'off',
     'import/extensions': [
       'error',
       'always',
