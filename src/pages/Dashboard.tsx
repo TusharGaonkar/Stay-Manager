@@ -1,3 +1,3 @@
 export default function Dashboard() {
-  return <div>Dashboard page</div>;
+  return <div className="mx-auto w-full h-full font-semibold text-xl">DashBoard</div>;
 }
