@@ -2,6 +2,7 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
+import { Toaster } from '@/shadcn_components/ui/toaster';
 
 type SideNavItemsType = {
   label: string;
@@ -44,6 +45,7 @@ export default function AppLayout() {
       <MainContent>
         <Outlet />
       </MainContent>
+      <Toaster />
     </div>
   );
 }
