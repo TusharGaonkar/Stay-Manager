@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shadcn_components/ui/button';
+
 export default function ErrorPage() {
   const navigate = useNavigate();
   return (
