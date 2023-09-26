@@ -6,7 +6,7 @@ export interface Database {
       bookings: {
         Row: {
           created_at: string;
-          endDatte: string;
+          endDate: string;
           extrasPrice: number | null;
           guestID: number | null;
           hasBreakfast: boolean | null;
@@ -23,7 +23,7 @@ export interface Database {
         };
         Insert: {
           created_at?: string;
-          endDatte: string;
+          endDate: string;
           extrasPrice?: number | null;
           guestID?: number | null;
           hasBreakfast?: boolean | null;
@@ -40,7 +40,7 @@ export interface Database {
         };
         Update: {
           created_at?: string;
-          endDatte?: string;
+          endDate?: string;
           extrasPrice?: number | null;
           guestID?: number | null;
           hasBreakfast?: boolean | null;
