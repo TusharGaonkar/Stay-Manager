@@ -1,12 +1,19 @@
 import supabase from './supabaseClient';
 import type { Database } from './supabase';
 
+const RESULTS_PER_PAGE = 10;
+
 type BookingType = Database['public']['Tables']['bookings']['Row'];
-async function getAllBookings(filter: string, sortBy: string): Promise<BookingType[]> {
+async function getAllBookings(
+  filter: string,
+  sortBy: string,
+  currentPage: number,
+  searchTerm: string | null
+): Promise<BookingType[]> {
   try {
     let defaultQuery = supabase
       .from('bookings')
-      .select('* , rooms(name) , guests(fullName , email) ');
+      .select('* , rooms!inner(name) , guests!inner(fullName , email) ', { count: 'exact' });
 
     if (filter !== 'all bookings') {
       defaultQuery = defaultQuery.eq('status', filter);
@@ -26,13 +33,19 @@ async function getAllBookings(filter: string, sortBy: string): Promise<BookingTy
           defaultQuery = defaultQuery.order('totalPrice', { ascending: false });
           break;
         default:
-          defaultQuery.order('created_at', { ascending: true });
+          defaultQuery = defaultQuery.order('created_at', { ascending: true });
       }
     }
+    if (searchTerm) {
+      defaultQuery = defaultQuery.ilike('guests.fullName', `${searchTerm}%`);
+    }
 
-    const { data, error } = await defaultQuery;
+    const { data, count, error } = await defaultQuery
+      .order('id', { ascending: true })
+      .range((currentPage - 1) * RESULTS_PER_PAGE, currentPage * RESULTS_PER_PAGE - 1);
+
     if (error) throw new Error(error.message);
-    return data as BookingType[];
+    return { roomData: data, count };
   } catch (error) {
     throw new Error((error as Error).message);
   }
