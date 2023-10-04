@@ -11,7 +11,7 @@ import {
 export default function SortRoomTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedSortOption, setSelectedSortOption] = useState(
-    searchParams.get('sort') || 'price-asc'
+    searchParams.get('sort') || 'price-desc',
   );
 
   useEffect(() => {
