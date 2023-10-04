@@ -59,9 +59,9 @@ export default function RoomsCreateForm() {
 
   return (
     <>
-      <div className="flex items-center justify-center mt-8 w-full">
+      <div className="">
         <Button
-          variant="default"
+          className="bg-white hover:bg-white/90"
           onClick={() => {
             setModalOpen(true);
             createForm.reset();
@@ -143,7 +143,7 @@ export default function RoomsCreateForm() {
                             })}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-red-400" />
                       </FormItem>
                     )}
                   />
@@ -159,6 +159,7 @@ export default function RoomsCreateForm() {
                             className="resize-none"
                             type="number"
                             step="any"
+                            defaultValue={0}
                             {...createForm.register('discount', {
                               valueAsNumber: true,
                             })}
