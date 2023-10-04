@@ -3,8 +3,10 @@ import { Tabs, TabsList, TabsTrigger } from '@/shadcn_components/ui/tabs';
 
 function FilterBookingTable({
   setBookingType,
+  setCurrentPage,
 }: {
   setBookingType: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [defaultType, setDefaultType] = useState('all bookings');
   return (
@@ -15,6 +17,7 @@ function FilterBookingTable({
           onClick={() => {
             setBookingType('all-bookings');
             setBookingType('all bookings');
+            setCurrentPage(1);
           }}
         >
           All Bookings
@@ -24,6 +27,7 @@ function FilterBookingTable({
           onClick={() => {
             setBookingType('checked in');
             setDefaultType('checked in');
+            setCurrentPage(1);
           }}
         >
           Checked In
@@ -33,6 +37,7 @@ function FilterBookingTable({
           onClick={() => {
             setBookingType('checked out');
             setDefaultType('checked out');
+            setCurrentPage(1);
           }}
         >
           Checked Out
@@ -43,6 +48,7 @@ function FilterBookingTable({
           onClick={() => {
             setBookingType('unconfirmed');
             setDefaultType('unconfirmed');
+            setCurrentPage(1);
           }}
         >
           Unconfirmed
