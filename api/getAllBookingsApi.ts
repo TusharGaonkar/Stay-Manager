@@ -8,8 +8,8 @@ async function getAllBookings(
   filter: string,
   sortBy: string,
   currentPage: number,
-  searchTerm: string | null
-): Promise<BookingType[]> {
+  searchTerm: string
+): Promise<{ roomData: BookingType[]; count: number }> {
   try {
     let defaultQuery = supabase
       .from('bookings')
@@ -45,6 +45,7 @@ async function getAllBookings(
       .range((currentPage - 1) * RESULTS_PER_PAGE, currentPage * RESULTS_PER_PAGE - 1);
 
     if (error) throw new Error(error.message);
+    if (count === null || count === undefined) throw new Error('Count is null or undefined.');
     return { roomData: data, count };
   } catch (error) {
     throw new Error((error as Error).message);
