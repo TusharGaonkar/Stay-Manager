@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import RevenueDistribution from '../features/Dashboard/RevenueDistribution';
 import BookingDurationRadial from '../features/Dashboard/BookingDurationRadial';
 import UpcomingActivity from '../features/Dashboard/UpcomingActivity';
@@ -5,16 +6,11 @@ import BookingsBar from '../features/Dashboard/TotalBookingsBar';
 import MostPopularRooms from '../features/Dashboard/MostPopularRooms';
 import Stats from '@/features/Dashboard/Stats';
 import FilterDashboard from '@/features/Dashboard/FilterDashboard';
-import { startOfYear } from 'date-fns';
-import { useState } from 'react';
-import MoonLoader from 'react-spinners/MoonLoader';
-import { Moon } from 'lucide-react';
 
 export default function Dashboard() {
   const [startDate, setStartDate] = useState('This Year');
   return (
     <div className="">
-      {/* <MoonLoader size={50} color={'#fff'} loading={true} /> */}
       <h1 className="text-3xl font-semibold m-3">Main Dashboard</h1>
       <div className="flex justify-end mb-3">
         <FilterDashboard setStartDate={setStartDate} />
