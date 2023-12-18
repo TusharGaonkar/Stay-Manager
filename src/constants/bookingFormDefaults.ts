@@ -1,0 +1,2 @@
+export const DEFAULT_MAX_GUESTS_PER_BOOKING = 3;
+export const DEFAULT_MAX_NO_OF_NIGHTS = 21;
