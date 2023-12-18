@@ -11,7 +11,7 @@ export default function Rooms() {
   return (
     <div className="flex flex-col items-center justify-center mt-7 p-2">
       <h2 className="text-2xl font-semibold self-start"> Rooms</h2>
-      <div className="flex flex-row justify-end items-end w-2/3 mb-3 p-3">
+      <div className="flex flex-row justify-end items-end w-2/3 mb-3 p-3 space-x-2">
         <FilterRoomTable />
         <SortRoomTable />
         <RoomsCreateForm />
