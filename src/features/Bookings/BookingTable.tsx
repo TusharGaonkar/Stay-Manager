@@ -1,5 +1,12 @@
+/* eslint-disable import/extensions */
+/* eslint-disable react/jsx-no-bind */
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { BsThreeDots } from 'react-icons/bs';
+import { MdDeleteOutline } from 'react-icons/md';
+import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import {
   Table,
   TableBody,
@@ -18,24 +25,22 @@ import {
   calculateDistanceDates,
 } from '../../utils/dateFormatter';
 import { Badge } from '@/shadcn_components/ui/badge';
-import addNewBooking from '../../../api/addNewBookingApi';
 import { Button } from '@/shadcn_components/ui/button';
 import FilterBookingTable from './FilterBookingTable';
 import SortBookingTable from './SortBookingTable';
 import SearchBookings from './SearchBookings';
 import Pagination from './Pagination';
 import { ScrollArea } from '@/shadcn_components/ui/scroll-area';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shadcn_components/ui/dropdown-menu';
+import { statusColors, DATA_PER_PAGE } from '@/constants/bookingTableConstants';
 
-const DATA_PER_PAGE = 10;
-
-const statusColors = {
-  unconfirmed: 'bg-red-500',
-  confirmed: 'bg-green-500',
-  'checked out': 'bg-slate-500',
-  'checked in': 'bg-purple-500',
-};
-
-function renderSkeletonRow(index: number) {
+function RenderSkeletonRow(index: number) {
   return (
     <TableRow key={index}>
       <TableCell>
@@ -62,11 +67,70 @@ function renderSkeletonRow(index: number) {
     </TableRow>
   );
 }
+
+function DropDownMenuForBookings({
+  status,
+  bookingID,
+}: {
+  status: 'unconfirmed' | 'checked out' | 'checked in';
+  bookingID: number;
+}) {
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate(`/bookings/bookingInfo/${bookingID}`);
+  }
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="outline-none flex items-center justify-center w-[50%]">
+        <BsThreeDots />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {status === 'unconfirmed' && (
+          <>
+            <DropdownMenuItem className="cursor-pointer" onClick={handleClick}>
+              <AiOutlineInfoCircle />
+              <span className="ml-1">Booking Info</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={handleClick}>
+              <BiLogInCircle />
+              <span className="ml-1">Check-in</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleClick} className="cursor-pointer">
+              <MdDeleteOutline />
+              <span className="ml-1">Delete Booking</span>
+            </DropdownMenuItem>
+          </>
+        )}
+        {status === 'checked in' && (
+          <>
+            <DropdownMenuItem className="cursor-pointer" onClick={handleClick}>
+              <AiOutlineInfoCircle />
+              <span className="ml-1">Booking Info</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={handleClick}>
+              <BiLogOutCircle />
+              <span className="ml-1">Check-out</span>
+            </DropdownMenuItem>
+          </>
+        )}
+        {status === 'checked out' && (
+          // eslint-disable-next-line react/jsx-no-bind
+          <DropdownMenuItem className="cursor-pointer" onClick={handleClick}>
+            <AiOutlineInfoCircle />
+            <span className="ml-1">Booking Info</span>
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 export default function BookingTable() {
   const [bookingType, setBookingType] = useState('all bookings');
   const [selectedSortOption, setSelectedSortOption] = useState('latest-bookings');
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   const { data, isSuccess } = useQuery({
     queryKey: ['bookings', bookingType, selectedSortOption, currentPage, searchTerm],
@@ -85,50 +149,42 @@ export default function BookingTable() {
     }
   }
 
-  // const { mutate } = useMutation({
-  //   mutationFn: addNewBooking,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['bookings'] });
-  //   },
-  //   onError: (err: Error) => {
-  //     toast({
-  //       variant: 'destructive',
-  //       title: 'Uh oh! Something went wrong.',
-  //       description: `${err.message}`,
-  //     });
-  //   },
-  // });
-
   return (
     <>
       <div className="flex justify-end w-[80%] gap-x-2 mb-5">
         <FilterBookingTable setBookingType={setBookingType} setCurrentPage={setCurrentPage} />
         <SortBookingTable setSelectedSortOption={setSelectedSortOption} />
-        <Button className="bg-green-300">Book Offline</Button>
+        <Button
+          onClick={() => navigate('/bookings/newBooking')}
+          className="bg-gradient-to-r from-teal-200 to-lime-200"
+        >
+          Book Offline
+        </Button>
       </div>
       <div className="w-full flex mb-6">
         <SearchBookings setSearchTerm={setSearchTerm} />
       </div>
-      <ScrollArea className="h-[70vh] w-full rounded-md border">
+      <ScrollArea className="h-[65vh] w-full rounded-md border">
         <Table className="">
           <TableCaption>
-            {data?.count > 0 ? `A list of bookings` : `No Bookings found ⛔`}
+            {data?.count > 0 ? 'A list of bookings' : 'No Bookings found ⛔'}
           </TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Booking ID</TableHead>
               <TableHead>Room</TableHead>
               <TableHead>Booking Date</TableHead>
-              <TableHead>Guest Name</TableHead>
+              <TableHead>Booked By</TableHead>
               <TableHead>Dates</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Amount</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody className="">
             {!isSuccess ? (
-              <>{Array.from({ length: 15 }).map((_, i) => renderSkeletonRow(i))}</>
+              <>{Array.from({ length: 15 }).map((_, i) => RenderSkeletonRow(i))}</>
             ) : (
               data?.roomData?.length > 0 &&
               data?.roomData?.map((booking) => (
@@ -146,7 +202,7 @@ export default function BookingTable() {
                     <div> {booking?.guests?.email}</div>
                   </TableCell>
                   <TableCell className="">
-                    {`Stay for ${booking.numNights} nights`}
+                    {`Stay for ${booking.numNights} nights for ${booking.numGuests + 1} guest`}
                     <div>
                       {`${formatDateGeneral(booking.startDate)} -> ${formatDateGeneral(
                         booking.endDate
@@ -155,14 +211,17 @@ export default function BookingTable() {
                   </TableCell>
                   <TableCell className="">
                     <Badge
-                      className={`${statusColors[booking?.status!]} hover:${
-                        statusColors[booking?.status!]
+                      className={`${statusColors[booking?.status]} hover:${
+                        statusColors[booking?.status]
                       }`}
                     >
                       {booking.status?.toUpperCase()}
                     </Badge>
                   </TableCell>
                   <TableCell className="">{formatToINR(booking.totalPrice!)}</TableCell>
+                  <TableCell>
+                    <DropDownMenuForBookings status={booking?.status} bookingID={booking.id} />
+                  </TableCell>
                 </TableRow>
               ))
             )}
