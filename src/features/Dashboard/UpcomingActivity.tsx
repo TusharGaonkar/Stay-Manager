@@ -1,7 +1,9 @@
+/* eslint-disable import/extensions */
 import { useQuery } from '@tanstack/react-query';
 import { format, parseISO, isAfter, isSameDay } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shadcn_components/ui/card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/shadcn_components/ui/avatar';
+import { Avatar, AvatarImage } from '@/shadcn_components/ui/avatar';
 import { Button } from '@/shadcn_components/ui/button';
 import getUpcomingActivities from '../../../api/getUpcomingActivitiesApi';
 import { Badge } from '@/shadcn_components/ui/badge';
@@ -10,24 +12,28 @@ type BookingDataType = {
   id: number;
   startDate: string;
   endDate: string;
-  guests: { fullName: string; email: string };
+  guests: { fullName: string; email: string; countryFlag: string };
 };
 function CheckStatus({ startDate, endDate }: { startDate: string; endDate: string }) {
   if (isSameDay(parseISO(startDate), new Date()) || isAfter(parseISO(startDate), new Date())) {
     return (
-      <Badge className="bg-blue-400 text-xs min-w-max">
+      <Badge className="bg-gradient-to-b from-sky-400 to-sky-200 min-w-max">
         {`Arriving  ${format(parseISO(endDate), 'dd MMM')}`}
       </Badge>
     );
   }
   return (
-    <Badge className="bg-violet-400 text-xs">
+    <Badge className="bg-gradient-to-r from-orange-300 to-rose-300 min-w-max">
       {`Departing  ${format(parseISO(endDate), 'dd MMM')}`}
     </Badge>
   );
 }
 
 function IndividualTimeline({ booking }: { booking: BookingDataType }) {
+  const navigate = useNavigate();
+  function handleOnClick() {
+    navigate(`/bookings/bookingInfo/${booking.id}`);
+  }
   const isArriving =
     isSameDay(parseISO(booking.startDate), new Date()) ||
     isAfter(parseISO(booking.startDate), new Date());
@@ -38,7 +44,7 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
       </div>
       <div className="col-span-2 flex space-x-2">
         <Avatar className="h-9 w-9">
-          <AvatarImage src="https://flagsapi.com/IN/shiny/64.png" alt="Avatar" />
+          <AvatarImage src={booking.guests?.countryFlag} alt="Avatar" />
         </Avatar>
         <div className="">
           <h1 className="text-sm">{booking.guests.fullName}</h1>
@@ -47,7 +53,10 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
       </div>
 
       <div className="">
-        <Button className="text-xs font-semibold  bg-green-300 hover:bg-green-200 min-w-full">
+        <Button
+          onClick={handleOnClick}
+          className="text-xs font-semibold bg-gradient-to-r from-teal-200 to-lime-200 min-w-full"
+        >
           {isArriving ? 'CHECK IN' : 'CHECK OUT'}
         </Button>
       </div>
@@ -55,7 +64,7 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
   );
 }
 export default function UpcomingActivity() {
-  const { data, isError, isLoading, isSuccess } = useQuery<BookingDataType[]>({
+  const { data, isSuccess } = useQuery<BookingDataType[]>({
     queryKey: ['activities'],
     queryFn: () => getUpcomingActivities(),
   });
