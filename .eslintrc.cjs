@@ -33,7 +33,7 @@ module.exports = {
     'linebreak-style': 'off',
     'import/extensions': [
       'error',
-      'always',
+      'ignorePackages',
       {
         js: 'never',
         jsx: 'never',
@@ -41,5 +41,6 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.ts', 'tsx'] }],
   },
 };
