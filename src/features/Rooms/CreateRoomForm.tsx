@@ -61,7 +61,7 @@ export default function RoomsCreateForm() {
     <>
       <div className="">
         <Button
-          className="bg-white hover:bg-white/90"
+          className="bg-gradient-to-r from-teal-200 to-lime-200"
           onClick={() => {
             setModalOpen(true);
             createForm.reset();
@@ -143,7 +143,7 @@ export default function RoomsCreateForm() {
                             })}
                           />
                         </FormControl>
-                        <FormMessage className="text-red-400" />
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
