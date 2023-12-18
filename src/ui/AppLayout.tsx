@@ -3,38 +3,43 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
 import { Toaster } from '@/shadcn_components/ui/toaster';
+import { AiOutlineHome } from 'react-icons/ai';
+import { MdPendingActions } from 'react-icons/md';
+import { MdOutlineBedroomChild } from 'react-icons/md';
+import { AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 type SideNavItemsType = {
   label: string;
   href: string;
-  icon: string;
+  icon: React.ComponentType;
 };
 
 const sideNavItems: SideNavItemsType[] = [
   {
     label: 'Home',
     href: '/dashboard',
-    icon: '',
+    Icon: AiOutlineHome,
   },
   {
     label: 'Bookings',
     href: '/bookings',
-    icon: '',
+    Icon: MdPendingActions,
   },
   {
     label: 'Rooms',
     href: '/rooms',
-    icon: '',
+    Icon: MdOutlineBedroomChild,
   },
   {
     label: 'Users',
     href: '/users',
-    icon: '',
+    Icon: AiOutlineUsergroupAdd,
   },
   {
     label: 'Settings',
     href: '/settings',
-    icon: '',
+    Icon: IoSettingsOutline,
   },
 ];
 
