@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } f
 import { Card, CardHeader, CardTitle } from '@/shadcn_components/ui/card';
 import getRevenueDistribution from '../../../api/getRevenueDistributionApi';
 import formatToINR from '@/utils/currencyFormatter';
+import MoonLoader from 'react-spinners/MoonLoader';
 
 interface DataType {
   name: string;
