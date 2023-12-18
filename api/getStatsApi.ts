@@ -25,14 +25,14 @@ async function getTotalPeopleServed(startDate) {
     const { data, error } = await supabase
       .from('bookings')
       .select('numGuests')
-      .eq('isPaid', true)
+      .eq('status', 'checked out')
       .gte('startDate', startDate.toISOString())
       .lte('startDate', new Date().toISOString());
 
     if (error) {
       throw new Error('Error getting total people served data');
     }
-    const totalPeopleServed = data.reduce((acc, booking) => acc + booking.numGuests, 0);
+    const totalPeopleServed = data.reduce((acc, booking) => acc + booking.numGuests + 1, 0);
     return totalPeopleServed;
   } catch (error) {
     throw new Error(error.message);
@@ -41,7 +41,7 @@ async function getTotalPeopleServed(startDate) {
 
 async function getTotalRooms() {
   try {
-    const { count, data, error } = await supabase.from('rooms').select('*', { count: 'exact' });
+    const { count, error } = await supabase.from('rooms').select('*', { count: 'exact' });
     if (error) {
       throw new Error('Error getting total rooms data');
     }
@@ -56,17 +56,15 @@ async function getTotalCheckins() {
   const today = new Date().toISOString();
 
   try {
-    const { count, error } = await supabase
+    const { data, count, error } = await supabase
       .from('bookings')
-      .select('*', { count: 'exact' })
-      .eq('isPaid', true)
-      .lte('startDate', today)
-      .gte('endDate', today);
+      .select('numGuests', { count: 'exact' })
+      .eq('status', 'checked in');
 
-    if (error) {
-      throw new Error('Error getting total checkins data');
-    }
-    return count;
+    if (error) throw error;
+    const currentGuests = data.reduce((acc, booking) => acc + booking.numGuests + 1, 0);
+
+    return currentGuests;
   } catch (error) {
     throw new Error(error.message);
   }
