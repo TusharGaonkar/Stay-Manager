@@ -1,4 +1,5 @@
 /* eslint-disable import/extensions */
+import { Image } from '@nextui-org/react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -19,6 +20,7 @@ import type { Database } from '../../../api/supabase';
 import { Skeleton } from '@/shadcn_components/ui/skeleton';
 import { useToast } from '@/shadcn_components/ui/use-toast';
 import DeleteFormModal from './DeleteRoomModal';
+import { ScrollArea } from '@/shadcn_components/ui/scroll-area';
 
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 
@@ -130,60 +132,62 @@ export default function RoomsTable({
     }
   }, [isSuccess, data, searchParams]);
   return (
-    <div className="w-full mx-auto max-w-7xl">
-      <Table className="">
-        <TableCaption className="">A list of all available rooms in the stay</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{null}</TableHead>
-            <TableHead className="">Room</TableHead>
-            <TableHead>Max Capacity</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead className="">Discount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <>{Array.from({ length: 9 }).map((_, i) => renderSkeletonRow(i))}</>
-          ) : (
-            filteredAndSortedData?.map((room: RoomType) => (
-              <TableRow key={room.id}>
-                <TableCell className="w-48">
-                  <img
-                    src={room.image!}
-                    alt={room.name!}
-                    className="object-cover w-full rounded-xl"
-                  />
-                </TableCell>
-                <TableCell>{room.name}</TableCell>
-                <TableCell>{room.maxCapacity}</TableCell>
-                <TableCell>{formatToINR(room.regularPrice)}</TableCell>
-                <TableCell>
-                  {room.discount! > 0 ? <span>{formatToINR(room.discount)} </span> : <span>-</span>}
-                </TableCell>
-                <TableCell className="">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <Button
-                        variant="default"
-                        onClick={() => {
-                          setModalOpen(true);
-                          setFormDefaultValues(room);
-                        }}
-                      >
-                        Edit
-                      </Button>
+    <div className="w-full max-w-8xl">
+      <ScrollArea className="h-[80vh] w-full rounded-md border">
+        <Table className="">
+          <TableCaption className="">A list of all available rooms in the stay</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>{null}</TableHead>
+              <TableHead className="">Room</TableHead>
+              <TableHead>Max Capacity</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead className="">Discount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <>{Array.from({ length: 9 }).map((_, i) => renderSkeletonRow(i))}</>
+            ) : (
+              filteredAndSortedData?.map((room: RoomType) => (
+                <TableRow key={room.id}>
+                  <TableCell className="w-48">
+                    <Image src={room.image!} alt={room.name!} />
+                  </TableCell>
+                  <TableCell>{room.name}</TableCell>
+                  <TableCell>{room.maxCapacity}</TableCell>
+                  <TableCell>{formatToINR(room.regularPrice)}</TableCell>
+                  <TableCell className="">
+                    {room.discount! > 0 ? (
+                      <span>{formatToINR(room.discount)} </span>
+                    ) : (
+                      <span>-</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="">
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <Button
+                          className="bg-slate-300 hover:bg-slate-400"
+                          onClick={() => {
+                            setModalOpen(true);
+                            setFormDefaultValues(room);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </div>
+                      <div>
+                        <DeleteFormModal room={room} deleteRoom={deleteRoom} />
+                      </div>
                     </div>
-                    <div>
-                      <DeleteFormModal room={room} deleteRoom={deleteRoom} />
-                    </div>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </ScrollArea>
     </div>
   );
 }
