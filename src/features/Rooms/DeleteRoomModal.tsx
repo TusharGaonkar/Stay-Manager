@@ -26,7 +26,7 @@ export default function DeleteFormModal({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">Delete</Button>
+        <Button className="bg-red-700 text-white hover:bg-red-800">Delete</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
