@@ -1,3 +1,10 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable consistent-return */
+/* eslint-disable object-curly-newline */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable operator-linebreak */
 /* eslint-disable import/extensions */
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -5,9 +12,10 @@ import { CalendarIcon } from 'lucide-react';
 import { differenceInDays, format } from 'date-fns';
 import { Image } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
+import MoonLoader from 'react-spinners/MoonLoader';
 import getGuestData from '../../api/getGuestDataApi';
 import { Card } from '@/shadcn_components/ui/card';
-import { cn } from '@/lib/utils';
+import cn from '@/lib/utils';
 import { Button } from '@/shadcn_components/ui/button';
 import { Calendar } from '@/shadcn_components/ui/calendar';
 import {
@@ -31,31 +39,29 @@ import { Checkbox } from '@/shadcn_components/ui/checkbox';
 import formatToINR from '@/utils/currencyFormatter';
 import { Textarea } from '@/shadcn_components/ui/textarea';
 import { Badge } from '@/shadcn_components/ui/badge';
-import useCreateBooking from '@/hooks/useCreateBooking';
-import getAllRoomsForBooking from '../../api/getAllRoomsForBookingApi';
+import useCreateBooking, { BookingFormSchemaType } from '@/hooks/useCreateBooking';
+import getAllRoomsForBooking, { type RoomsResponse } from '../../api/getAllRoomsForBookingApi';
 import getBreakfastPrice from '../../api/getBreakfastPriceApi';
 import addNewBooking from '../../api/addNewBookingApi';
 import { toast } from '@/shadcn_components/ui/use-toast';
-import MoonLoader from 'react-spinners/MoonLoader';
+import { type Database } from '../../api/supabase';
+
+type BookingType = Database['public']['Tables']['bookings']['Row'];
 
 export default function NewBookings() {
   const { guestID } = useParams();
   const navigate = useNavigate();
   const [form, handleSubmit] = useCreateBooking();
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [numGuests, setNumGuests] = useState(0);
+  const [startDate, setStartDate] = useState<null | Date>(null);
+  const [endDate, setEndDate] = useState<null | Date>(null);
+  const [numGuests, setNumGuests] = useState<number>(0);
   const [hasBreakfast, setHasBreakfast] = useState(false);
-  const [roomSelected, setRoomSelected] = useState(null);
-  const [intervalID, setIntervalID] = useState(null);
+  const [roomSelected, setRoomSelected] = useState<null | RoomsResponse>(null);
 
-  useEffect(() => {
-    setRoomSelected(null);
-    form.resetField('room');
-  }, [startDate, endDate, numGuests]); // reset roomSelected when startDate, endDate, numGuests changes
+  const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
 
   const roomImage =
-    roomSelected?.image ??
+    roomSelected?.image ||
     'https://vmhotzmovgfkkcbozoey.supabase.co/storage/v1/object/public/rooms/0.19068467337825723-009';
 
   const getAvailableRoomsQuery = useQuery({
@@ -77,8 +83,15 @@ export default function NewBookings() {
     queryFn: () => getGuestData(Number(guestID)),
   });
 
+  // reset roomSelected when startDate, endDate, numGuests changes
+  useEffect(() => {
+    setRoomSelected(null);
+    form.resetField('room');
+  }, [startDate, endDate, numGuests, form]);
+
   let diffDays = 0;
   let totalPrice = 0;
+
   if (startDate && endDate && startDate < endDate) {
     diffDays = differenceInDays(endDate, startDate);
     if (roomSelected) {
@@ -90,14 +103,12 @@ export default function NewBookings() {
     }
   }
 
-  async function onSubmit(value) {
+  async function handleBookRoom(value: BookingFormSchemaType) {
     if (!value || !value.room) return;
+
     const roomID = Number(value.room.id);
     const bookingFor = Number(guestID);
-    const { startDate } = value;
-    const { endDate } = value;
-    const { numGuests } = value;
-    const { hasBreakfast } = value;
+    const { startDate, endDate, numGuests, hasBreakfast } = value;
     const numNights = diffDays;
     const roomPrice = value.room.regularprice;
     const extrasPrice = hasBreakfast ? breakfastQuery?.data || 0 : 0;
@@ -106,7 +117,10 @@ export default function NewBookings() {
     const isPaid = false;
     const { observations } = value;
 
-    const bookingData = {
+    const bookingData: Omit<BookingType, 'id' | 'created_at' | 'startDate' | 'endDate'> & {
+      startDate: Date;
+      endDate: Date;
+    } = {
       guestID: bookingFor,
       roomID,
       startDate,
@@ -119,7 +133,7 @@ export default function NewBookings() {
       totalPrice,
       status,
       isPaid,
-      observations,
+      observations: observations ?? null,
     };
 
     toast({
@@ -132,24 +146,37 @@ export default function NewBookings() {
     if (data) {
       toast({
         variant: 'default',
-        title: `Booking successful,your Booking ID is ${data.id}`,
+        title: `Booking successful, your Booking ID is ${data.id}`,
       });
 
-      const setTimeoutID = setTimeout(() => {
-        navigate('/bookings');
-      }, 4000);
+      // Add a delay to show the toast
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(null);
+        }, 3000);
+      });
 
-      setIntervalID(setTimeoutID);
+      setBookingSuccess(true);
     }
   }
 
   useEffect(() => {
-    return () => {
-      if (intervalID) {
-        clearInterval(intervalID);
-      }
-    };
-  });
+    if (bookingSuccess) {
+      const delay = 3000; // 3 seconds
+
+      toast({
+        variant: 'default',
+        title: 'Redirecting to bookings page, please wait...',
+      });
+
+      const timerID = setTimeout(() => {
+        navigate('/bookings');
+      }, delay);
+
+      return () => clearTimeout(timerID);
+    }
+  }, [bookingSuccess, navigate]);
+
   return (
     <>
       {isLoading && (
@@ -172,8 +199,8 @@ export default function NewBookings() {
             </div>
             <div className="p-8">
               <div className="flex flex-col space-y-4">
-                <Form {...form} className="">
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <Form {...form}>
+                  <form onSubmit={handleSubmit(handleBookRoom)} className="space-y-4">
                     <FormField
                       control={form.control}
                       name="startDate"
@@ -205,9 +232,12 @@ export default function NewBookings() {
                                 selected={field.value}
                                 onSelect={(date) => {
                                   field.onChange(date);
-                                  setStartDate(date);
+                                  setStartDate(date ?? null);
                                 }}
-                                disabled={(date) => date < new Date().setHours(0, 0, 0, 0)}
+                                disabled={(date) =>
+                                  date.getTime() <
+                                  new Date(new Date().setDate(new Date().getDate() - 1)).getTime()
+                                }
                                 initialFocus
                               />
                             </PopoverContent>
@@ -247,9 +277,9 @@ export default function NewBookings() {
                                 selected={field.value}
                                 onSelect={(date) => {
                                   field.onChange(date);
-                                  setEndDate(date);
+                                  setEndDate(date ?? null);
                                 }}
-                                disabled={(date) => date <= new Date().setHours(0, 0, 0, 0)}
+                                disabled={(date) => date.getTime() < new Date().getTime()}
                                 initialFocus
                               />
                             </PopoverContent>
@@ -274,8 +304,8 @@ export default function NewBookings() {
                                 valueAsNumber: true,
                               })}
                               onChange={(e) => {
-                                if (isNaN(Number(e.target.value))) {
-                                  e.target.value = 0;
+                                if (Number.isNaN(Number(e.target.value))) {
+                                  e.target.value = '0';
                                   setNumGuests(0);
                                 } else {
                                   setNumGuests(Number(e.target.value));
@@ -356,7 +386,7 @@ export default function NewBookings() {
                                 checked={field.value}
                                 onCheckedChange={(data) => {
                                   field.onChange(data);
-                                  setHasBreakfast(data);
+                                  setHasBreakfast(!!data);
                                 }}
                               />
                             </FormControl>
@@ -372,10 +402,10 @@ export default function NewBookings() {
                       />
                     )}
                     <div>
-                      {roomSelected?.discount > 0 ? (
+                      {(roomSelected?.discount ?? 0) > 0 ? (
                         <Badge className="bg-orange-300 mr-2 hover:bg-orange-300">
                           {`🥳 Congratulations! You've just unlocked a discount of ${formatToINR(
-                            diffDays * roomSelected.discount
+                            diffDays * (roomSelected?.discount || 0)
                           )} `}
                         </Badge>
                       ) : null}
@@ -392,7 +422,7 @@ export default function NewBookings() {
                         className="bg-red-500 text-white hover:bg-red-400"
                       >
                         {' '}
-                        Cancel Booking{' '}
+                        Cancel Booking&nbsp;
                       </Button>
                       <Button type="submit" className="bg-green-200 hover:bg-green-300">
                         Book Now
