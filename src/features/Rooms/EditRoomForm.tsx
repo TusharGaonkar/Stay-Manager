@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/comma-dangle */
 /* eslint-disable import/extensions */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -24,20 +26,33 @@ export default function RoomsEditForm({
   formDefaultValues,
 }: {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  formDefaultValues: RoomType;
+  formDefaultValues: RoomType | null;
 }) {
   const [editForm, handleSubmit] = useEditRoom();
   const queryClient = useQueryClient();
 
   const { mutate: editRoom } = useMutation({
-    mutationFn: async (data: RoomType) => {
+    mutationFn: async (data: {
+      id: number;
+      description: string;
+      maxCapacity: number;
+      regularPrice: number;
+      name?: string | null | undefined;
+      discount?: number | null | undefined;
+      image?: string;
+    }) => {
       toast({
         variant: 'default',
         title: 'Editing the room...',
       });
 
-      const isImageUpdated = data?.image?.length > 0;
-      await editRoomByID(data.id, { ...data, name: formDefaultValues.name }, isImageUpdated);
+      const isImageUpdated = (data?.image?.length ?? 0) > 0;
+      await editRoomByID(
+        data.id,
+        // @ts-ignore
+        { ...data, name: formDefaultValues ? formDefaultValues.name : null },
+        isImageUpdated
+      );
     },
     onSuccess: () => {
       toast({
@@ -59,9 +74,10 @@ export default function RoomsEditForm({
   return (
     <Form {...editForm}>
       <form
-        onSubmit={handleSubmit((data: RoomType) => {
+        onSubmit={handleSubmit((data) => {
           setModalOpen(false);
           const updatedRoomData = { ...formDefaultValues, ...data };
+          // @ts-ignore
           editRoom(updatedRoomData);
         })}
         className="w-full space-y-6"
@@ -70,7 +86,7 @@ export default function RoomsEditForm({
           control={editForm.control}
           name="name"
           disabled
-          defaultValue={formDefaultValues.name!}
+          defaultValue={formDefaultValues?.name ?? ''}
           render={() => (
             <FormItem>
               <FormLabel>Room</FormLabel>
@@ -79,7 +95,7 @@ export default function RoomsEditForm({
                   placeholder="Enter the room name"
                   className="resize-none"
                   disabled
-                  defaultValue={formDefaultValues.name!}
+                  defaultValue={formDefaultValues?.name ?? ''}
                   {...editForm.register('name')}
                 />
               </FormControl>
@@ -97,7 +113,7 @@ export default function RoomsEditForm({
                 <Input
                   placeholder="Enter maximum capacity"
                   className="resize-none"
-                  defaultValue={formDefaultValues.maxCapacity!}
+                  defaultValue={formDefaultValues?.maxCapacity ?? 0}
                   {...editForm.register('maxCapacity', {
                     valueAsNumber: true,
                   })}
@@ -120,7 +136,7 @@ export default function RoomsEditForm({
                   {...editForm.register('regularPrice', {
                     valueAsNumber: true,
                   })}
-                  defaultValue={formDefaultValues.regularPrice!}
+                  defaultValue={formDefaultValues?.regularPrice ?? 0}
                 />
               </FormControl>
               <FormMessage />
@@ -140,7 +156,7 @@ export default function RoomsEditForm({
                   {...editForm.register('discount', {
                     valueAsNumber: true,
                   })}
-                  defaultValue={formDefaultValues.discount!}
+                  defaultValue={formDefaultValues?.discount ?? 0}
                 />
               </FormControl>
               <FormMessage />
@@ -156,7 +172,7 @@ export default function RoomsEditForm({
               <FormControl>
                 <Textarea
                   placeholder="Tell us a little bit about the room"
-                  defaultValue={formDefaultValues.description!}
+                  defaultValue={formDefaultValues?.description ?? ''}
                   className="resize-none"
                   {...editForm.register('description')}
                 />

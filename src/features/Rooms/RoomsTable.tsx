@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable import/extensions */
 import { Image } from '@nextui-org/react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -24,7 +25,7 @@ import { ScrollArea } from '@/shadcn_components/ui/scroll-area';
 
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 
-function renderSkeletonRow(index) {
+function renderSkeletonRow(index: number) {
   return (
     <TableRow key={index}>
       <TableCell>
@@ -59,11 +60,11 @@ export default function RoomsTable({
   setFormDefaultValues,
 }: {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setFormDefaultValues: RoomType;
+  setFormDefaultValues: React.Dispatch<React.SetStateAction<RoomType | null>>;
 }) {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
-  const [filteredAndSortedData, setFilteredAndSortedData] = useState([]);
+  const [filteredAndSortedData, setFilteredAndSortedData] = useState<RoomType[]>([]);
 
   const { isLoading, data, isSuccess } = useQuery<RoomType[]>({
     queryKey: ['rooms'],
@@ -99,7 +100,7 @@ export default function RoomsTable({
 
       const filteredData = data.filter((room) => {
         if (filterCriteria === 'discount') {
-          return room.discount > 0;
+          return room.discount! > 0;
         }
         if (filterCriteria === 'no-discount') {
           return room.discount === 0;
@@ -109,23 +110,24 @@ export default function RoomsTable({
 
       const sortedData = filteredData.sort((a, b) => {
         if (sortCriteria === 'price-asc') {
-          return a.regularPrice - b.regularPrice;
+          return a.regularPrice! - b.regularPrice!;
         }
         if (sortCriteria === 'price-desc') {
-          return b.regularPrice - a.regularPrice;
+          return b.regularPrice! - a.regularPrice!;
         }
         if (sortCriteria === 'discount-asc') {
-          return a.discount - b.discount;
+          return a.discount! - b.discount!;
         }
         if (sortCriteria === 'discount-desc') {
-          return b.discount - a.discount;
+          return b.discount! - a.discount!;
         }
         if (sortCriteria === 'maxCapacity-asc') {
-          return a.maxCapacity - b.maxCapacity;
+          return a.maxCapacity! - b.maxCapacity!;
         }
         if (sortCriteria === 'maxCapacity-desc') {
-          return b.maxCapacity - a.maxCapacity;
+          return b.maxCapacity! - a.maxCapacity!;
         }
+        return 0;
       });
 
       setFilteredAndSortedData(sortedData);
@@ -156,10 +158,10 @@ export default function RoomsTable({
                   </TableCell>
                   <TableCell>{room.name}</TableCell>
                   <TableCell>{room.maxCapacity}</TableCell>
-                  <TableCell>{formatToINR(room.regularPrice)}</TableCell>
+                  <TableCell>{formatToINR(room?.regularPrice ?? 0)}</TableCell>
                   <TableCell className="">
                     {room.discount! > 0 ? (
-                      <span>{formatToINR(room.discount)} </span>
+                      <span>{formatToINR(room?.discount ?? 0)}</span>
                     ) : (
                       <span>-</span>
                     )}

@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable operator-linebreak */
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable import/extensions */
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -36,7 +40,7 @@ import { toast } from '@/shadcn_components/ui/use-toast';
 
 import deleteBookingByID from '../../api/deleteBookingByIDApi';
 import { checkIn, checkOut } from '../../api/check-in-outApi';
-import { cn } from '@/lib/utils';
+import cn from '@/lib/utils';
 import formatToINR from '@/utils/currencyFormatter';
 import { statusColors } from '@/constants/bookingTableConstants';
 import getBookingInfo from '../../api/getBookingInfoApi';
@@ -155,7 +159,7 @@ function ActionButton({
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     className="bg-red-500/90 hover:bg-red-500"
-                    onClick={handleDelete}
+                    onClick={() => handleDelete()}
                   >
                     Confirm Delete
                   </AlertDialogAction>
@@ -177,7 +181,9 @@ function ActionButton({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleCheckIn}>Confirm Check In</AlertDialogAction>
+                  <AlertDialogAction onClick={() => handleCheckIn()}>
+                    Confirm Check In
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -199,7 +205,9 @@ function ActionButton({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleCheckOut}>Confirm Check Out</AlertDialogAction>
+                <AlertDialogAction onClick={() => handleCheckOut()}>
+                  Confirm Check Out
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -296,7 +304,8 @@ export default function BookingsInfo() {
                 <span className="mr-1">
                   <BiUserCheck />
                 </span>
-                National ID <span className="ml-2">{bookingData.guests.nationalID}</span>
+                National ID
+                <span className="ml-2">{bookingData.guests.nationalID}</span>
               </h1>
             </div>
             <div className="flex space-x-1 items-center font-semibold">
@@ -304,7 +313,7 @@ export default function BookingsInfo() {
                 <MdOutlineFreeBreakfast />
               </span>
               <h1 className="flex items-center">
-                Breakfast included :{' '}
+                Breakfast included :&nbsp;
                 <span className="text-slate-300">{bookingData.hasBreakfast ? 'Yes' : 'No'}</span>
               </h1>
             </div>

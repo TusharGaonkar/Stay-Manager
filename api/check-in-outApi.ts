@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
+import { PostgrestError } from '@supabase/supabase-js';
 import supabase from './supabaseClient';
 
 export async function checkIn(bookingID: number) {
@@ -8,7 +10,7 @@ export async function checkIn(bookingID: number) {
       .eq('id', bookingID);
     if (error) throw error;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as PostgrestError).message);
   }
 }
 
@@ -20,6 +22,6 @@ export async function checkOut(bookingID: number) {
       .eq('id', bookingID);
     if (error) throw error;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as PostgrestError).message);
   }
 }

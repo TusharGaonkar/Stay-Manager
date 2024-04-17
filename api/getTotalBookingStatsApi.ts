@@ -1,4 +1,6 @@
-import supabase from './supabaseClient';
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-throw-literal */
+import { PostgrestError } from '@supabase/supabase-js';
 import {
   subMonths,
   startOfWeek,
@@ -9,9 +11,10 @@ import {
   format,
   endOfYear,
 } from 'date-fns';
+import supabase from './supabaseClient';
 
 export default async function getTotalBookingStats(range: string) {
-  let modifiedData = {};
+  const modifiedData: Record<string, number> = {};
   const currentDate = new Date();
 
   switch (range) {
@@ -26,7 +29,8 @@ export default async function getTotalBookingStats(range: string) {
           .lte('endDate', endOfYearDate.toISOString());
         if (error) throw error;
 
-        const individualMonthData = {};
+        const individualMonthData: Record<string, number> = {};
+
         data?.forEach((booking) => {
           const bookingMonth = format(parseISO(booking.startDate), 'MMM');
           individualMonthData[bookingMonth] = (individualMonthData[bookingMonth] || 0) + 1;
@@ -39,21 +43,22 @@ export default async function getTotalBookingStats(range: string) {
 
         allMonths.forEach((month) => {
           const getMonth = format(month, 'MMM');
-          individualMonthData[getMonth]
-            ? (modifiedData[getMonth] = individualMonthData[getMonth])
-            : (modifiedData[getMonth] = 0);
+
+          if (individualMonthData[getMonth]) {
+            modifiedData[getMonth] = individualMonthData[getMonth];
+          } else {
+            modifiedData[getMonth] = 0;
+          }
         });
 
-        const result = Object.keys(modifiedData).map((key) => {
-          return {
-            name: key,
-            'Total Bookings': modifiedData[key],
-          };
-        });
+        const result = Object.keys(modifiedData).map((key) => ({
+          name: key,
+          'Total Bookings': modifiedData[key],
+        }));
 
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as Error | PostgrestError).message);
       }
 
     case 'Past 6 Months':
@@ -67,7 +72,8 @@ export default async function getTotalBookingStats(range: string) {
 
         if (error) throw error;
 
-        const individualMonthData = {};
+        const individualMonthData: typeof modifiedData = {};
+
         data?.forEach((booking) => {
           const bookingMonth = format(parseISO(booking.startDate), 'MMM');
           individualMonthData[bookingMonth] = (individualMonthData[bookingMonth] || 0) + 1;
@@ -85,18 +91,15 @@ export default async function getTotalBookingStats(range: string) {
             : (modifiedData[getMonth] = 0);
         });
 
-        const result = Object.keys(modifiedData).map((key) => {
-          return {
-            name: key,
-            'Total Bookings': modifiedData[key],
-          };
-        });
+        const result = Object.keys(modifiedData).map((key) => ({
+          name: key,
+          'Total Bookings': modifiedData[key],
+        }));
 
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as Error | PostgrestError).message);
       }
-      break;
 
     case 'Last Month':
       try {
@@ -108,7 +111,8 @@ export default async function getTotalBookingStats(range: string) {
           .lte('endDate', currentDate.toISOString());
 
         if (error) throw error;
-        const individualDaysData = {};
+        const individualDaysData: Record<string, number> = {};
+
         data?.forEach((booking) => {
           const bookingDay = format(parseISO(booking.startDate), 'd');
           individualDaysData[bookingDay] = (individualDaysData[bookingDay] || 0) + 1;
@@ -134,9 +138,8 @@ export default async function getTotalBookingStats(range: string) {
         });
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as Error | PostgrestError).message);
       }
-      break;
     case 'This Week':
       try {
         const currentWeek = startOfWeek(currentDate);
@@ -147,7 +150,7 @@ export default async function getTotalBookingStats(range: string) {
           .lte('endDate', currentDate.toISOString());
 
         if (error) throw error;
-        const individualDaysData = {};
+        const individualDaysData: Record<string, number> = {};
         data?.forEach((booking) => {
           const bookingDay = format(parseISO(booking.startDate), 'd');
           individualDaysData[bookingDay] = (individualDaysData[bookingDay] || 0) + 1;
@@ -174,10 +177,8 @@ export default async function getTotalBookingStats(range: string) {
 
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as Error | PostgrestError).message);
       }
-      break;
-
     default:
       throw new Error('Invalid range');
   }

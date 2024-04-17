@@ -4,10 +4,13 @@ import RoomsTable from '../features/Rooms/RoomsTable';
 import EditFormModal from '../features/Rooms/EditFormModal';
 import FilterRoomTable from '../features/Rooms/FilterRoomTable';
 import SortRoomTable from '../features/Rooms/SortRoomTable';
+import { Database } from '../../api/supabase';
+
+type RoomsType = Database['public']['Tables']['rooms']['Row'];
 
 export default function Rooms() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [formDefaultValues, setFormDefaultValues] = useState({});
+  const [formDefaultValues, setFormDefaultValues] = useState<RoomsType | null>(null);
   return (
     <div className="flex flex-col items-center justify-center mt-7 p-2">
       <h2 className="text-2xl font-semibold self-start"> Rooms</h2>

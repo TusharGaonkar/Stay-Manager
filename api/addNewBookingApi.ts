@@ -1,10 +1,18 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable @typescript-eslint/no-throw-literal */
 /* eslint-disable import/extensions */
 import supabase from './supabaseClient';
 import type { Database } from './supabase';
 import { toast } from '@/shadcn_components/ui/use-toast';
 
 type BookingType = Database['public']['Tables']['bookings']['Row'];
-async function addNewBooking(bookingData: Omit<BookingType, 'created_at'>): Promise<BookingType> {
+
+async function addNewBooking(
+  bookingData: Omit<BookingType, 'id' | 'created_at' | 'startDate' | 'endDate'> & {
+    startDate: Date;
+    endDate: Date;
+  }
+): Promise<BookingType> {
   try {
     toast({
       variant: 'default',

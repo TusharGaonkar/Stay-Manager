@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/shadcn_components/ui/tabs';

@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { useState } from 'react';
 import {
   Select,

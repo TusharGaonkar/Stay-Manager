@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { useState, useRef } from 'react';
 import { Badge } from '@/shadcn_components/ui/badge';
 import { Button } from '@/shadcn_components/ui/button';

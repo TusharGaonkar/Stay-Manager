@@ -1,10 +1,12 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable import/extensions */
 import { useQuery } from '@tanstack/react-query';
 import { XAxis, YAxis, ResponsiveContainer, BarChart, Bar, Tooltip, Legend } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shadcn_components/ui/card';
 import getTotalBookingStats from '../../../api/getTotalBookingStatsApi';
 
 export default function TotalBookingsBar({ startDate }: { startDate: string }) {
-  const { data, isError, isSuccess, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['totalBookingsStats', startDate],
     queryFn: () => getTotalBookingStats(startDate),
   });

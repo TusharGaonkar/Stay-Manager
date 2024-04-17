@@ -78,9 +78,14 @@ export default function RoomsCreateForm() {
             <AlertDialogDescription className="">
               <Form {...createForm}>
                 <form
-                  onSubmit={handleSubmit((data: RoomType) => {
+                  onSubmit={handleSubmit((data) => {
                     setModalOpen(false);
-                    addRoom({ ...data, image: data?.image });
+                    addRoom({
+                      ...data,
+                      image: data?.image,
+                      created_at: '',
+                      id: 0,
+                    });
                   })}
                   className="w-full space-y-6"
                 >

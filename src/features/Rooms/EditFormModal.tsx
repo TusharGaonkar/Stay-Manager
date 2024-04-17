@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import RoomsEditForm from './EditRoomForm';
 import {
   AlertDialog,
@@ -9,6 +10,7 @@ import {
 import { Database } from '../../../api/supabase';
 
 type RoomType = Database['public']['Tables']['rooms']['Row'];
+
 export default function EditFormModal({
   modalOpen,
   setModalOpen,
@@ -16,7 +18,7 @@ export default function EditFormModal({
 }: {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  formDefaultValues: RoomType;
+  formDefaultValues: RoomType | null;
 }) {
   return (
     <AlertDialog open={modalOpen}>

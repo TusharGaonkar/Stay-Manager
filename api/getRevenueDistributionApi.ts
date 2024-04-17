@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import {
   subMonths,
   startOfWeek,
@@ -7,10 +9,11 @@ import {
   parseISO,
   eachDayOfInterval,
 } from 'date-fns';
+import { PostgrestError } from '@supabase/supabase-js';
 import supabase from './supabaseClient';
 
 export default async function getRevenueDistribution(range: string) {
-  let modifiedData = {};
+  const modifiedData: Record<string, { totalPrice: number; extrasPrice: number }> = {};
   const currentDate = new Date();
 
   switch (range) {
@@ -25,10 +28,10 @@ export default async function getRevenueDistribution(range: string) {
           .lte('endDate', currentDate.toISOString());
 
         if (error) {
-          throw error;
+          throw new Error(error.message);
         }
 
-        const individualMonthData = {};
+        const individualMonthData: Record<string, { totalPrice: number; extrasPrice: number }> = {};
 
         data?.forEach((booking) => {
           const bookingMonth = format(parseISO(booking.startDate), 'MMM');
@@ -68,7 +71,7 @@ export default async function getRevenueDistribution(range: string) {
         }));
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as PostgrestError | Error).message);
       }
 
     case 'Past 6 Months':
@@ -82,10 +85,11 @@ export default async function getRevenueDistribution(range: string) {
           .lte('endDate', currentDate.toISOString());
 
         if (error) {
-          throw error;
+          throw new Error(error.message);
         }
 
-        const individualMonthData = {};
+        const individualMonthData: Record<string, { totalPrice: number; extrasPrice: number }> = {};
+
         data?.forEach((booking) => {
           const bookingMonth = format(parseISO(booking.startDate), 'MMM');
           const bookingTotalPrice = booking.totalPrice;
@@ -124,7 +128,7 @@ export default async function getRevenueDistribution(range: string) {
         }));
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as PostgrestError | Error).message);
       }
 
     case 'Last Month':
@@ -137,9 +141,9 @@ export default async function getRevenueDistribution(range: string) {
           .gte('startDate', lastMonth.toISOString())
           .lte('endDate', currentDate.toISOString());
 
-        if (error) throw error;
+        if (error) throw new Error(error.message);
 
-        const individualDaysData = {};
+        const individualDaysData: Record<string, { totalPrice: number; extrasPrice: number }> = {};
         data?.forEach((booking) => {
           const bookingDay = format(parseISO(booking.startDate), 'd');
           const bookingTotalPrice = booking.totalPrice;
@@ -178,7 +182,7 @@ export default async function getRevenueDistribution(range: string) {
 
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as PostgrestError | Error).message);
       }
 
     case 'This Week':
@@ -195,7 +199,7 @@ export default async function getRevenueDistribution(range: string) {
           throw new Error(error.message);
         }
 
-        const individualDaysData = {};
+        const individualDaysData: Record<string, { totalPrice: number; extrasPrice: number }> = {};
         data?.forEach((booking) => {
           const bookingDay = format(parseISO(booking.startDate), 'd');
           const bookingTotalPrice = booking.totalPrice;
@@ -234,7 +238,7 @@ export default async function getRevenueDistribution(range: string) {
 
         return result;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error((error as PostgrestError | Error).message);
       }
 
     default:

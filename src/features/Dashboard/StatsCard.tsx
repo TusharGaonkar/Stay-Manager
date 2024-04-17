@@ -1,9 +1,11 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable import/extensions */
 import { Card, CardContent, CardHeader, CardTitle } from '@/shadcn_components/ui/card';
 
 export default function StatCard({
   stat,
 }: {
-  stat: { label: string; value: string; icon: React.ComponentType };
+  stat: { label: string; value: string | number; icon: React.ComponentType };
 }) {
   return (
     <Card
@@ -17,7 +19,7 @@ export default function StatCard({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="font-bold text-lg">{stat.value}</div>
+        <div className="font-bold text-lg">{stat?.value ?? 'No enough data'}</div>
       </CardContent>
     </Card>
   );

@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
+import { PostgrestError } from '@supabase/supabase-js';
 import supabase from './supabaseClient';
 import type { Database } from './supabase';
 
-type BookingType = Database['public']['Tables']['bookings']['Row'];
-export default async function createGuest(guestData: BookingType): Promise<BookingType> {
+type GuestInfo = Database['public']['Tables']['guests']['Row'];
+
+export default async function createGuest(guestData: Omit<GuestInfo, 'id' | 'created_at'>) {
   try {
     const { data, error } = await supabase
       .from('guests')
@@ -12,6 +15,6 @@ export default async function createGuest(guestData: BookingType): Promise<Booki
     if (error) throw error;
     return data[0].id;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as PostgrestError).message || 'Something went wrong');
   }
 }

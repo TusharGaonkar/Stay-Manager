@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shadcn_components/ui/button';
 

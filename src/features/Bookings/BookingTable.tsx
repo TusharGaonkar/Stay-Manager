@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable operator-linebreak */
 /* eslint-disable import/extensions */
 /* eslint-disable react/jsx-no-bind */
 import { useState } from 'react';
@@ -167,7 +170,7 @@ export default function BookingTable() {
       <ScrollArea className="h-[65vh] w-full rounded-md border">
         <Table className="">
           <TableCaption>
-            {data?.count > 0 ? 'A list of bookings' : 'No Bookings found ⛔'}
+            {(data?.count ?? 0) > 0 ? 'A list of bookings' : 'No Bookings found ⛔'}
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -190,7 +193,7 @@ export default function BookingTable() {
               data?.roomData?.map((booking) => (
                 <TableRow key={booking.id}>
                   <TableCell className="font-medium">{booking.id}</TableCell>
-                  <TableCell>{booking.rooms.name}</TableCell>
+                  <TableCell>{booking?.rooms?.name as string}</TableCell>
                   <TableCell>
                     {calculateDistanceDates(booking.created_at) === 0
                       ? 'Booked Recently'
@@ -202,7 +205,9 @@ export default function BookingTable() {
                     <div> {booking?.guests?.email}</div>
                   </TableCell>
                   <TableCell className="">
-                    {`Stay for ${booking.numNights} nights for ${booking.numGuests + 1} guest`}
+                    {`Stay for ${booking.numNights} nights for ${
+                      (booking.numGuests || 0) + 1
+                    } guest`}
                     <div>
                       {`${formatDateGeneral(booking.startDate)} -> ${formatDateGeneral(
                         booking.endDate
@@ -211,8 +216,8 @@ export default function BookingTable() {
                   </TableCell>
                   <TableCell className="">
                     <Badge
-                      className={`${statusColors[booking?.status]} hover:${
-                        statusColors[booking?.status]
+                      className={`${statusColors[booking.status!]} hover:${
+                        statusColors[booking.status!]
                       }`}
                     >
                       {booking.status?.toUpperCase()}
@@ -220,7 +225,10 @@ export default function BookingTable() {
                   </TableCell>
                   <TableCell className="">{formatToINR(booking.totalPrice!)}</TableCell>
                   <TableCell>
-                    <DropDownMenuForBookings status={booking?.status} bookingID={booking.id} />
+                    <DropDownMenuForBookings
+                      status={booking.status as 'unconfirmed' | 'checked out' | 'checked in'}
+                      bookingID={booking.id}
+                    />
                   </TableCell>
                 </TableRow>
               ))
@@ -232,7 +240,7 @@ export default function BookingTable() {
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        dataSize={data?.count}
+        dataSize={data?.count || 0}
       />
     </>
   );

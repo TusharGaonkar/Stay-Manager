@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { useState } from 'react';
 import RevenueDistribution from '../features/Dashboard/RevenueDistribution';
 import BookingDurationRadial from '../features/Dashboard/BookingDurationRadial';

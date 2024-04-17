@@ -1,3 +1,6 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable object-curly-newline */
+/* eslint-disable import/extensions */
 import { FaIndianRupeeSign } from 'react-icons/fa6';
 import { BsFillPersonCheckFill, BsClipboardDataFill } from 'react-icons/bs';
 import { MdOutlineFamilyRestroom } from 'react-icons/md';
@@ -8,14 +11,17 @@ import getStats from '../../../api/getStatsApi';
 import formatToINR from '@/utils/currencyFormatter';
 import { Skeleton } from '@/shadcn_components/ui/skeleton';
 
-export default function Stats({ startDate }) {
-  const { data, isLoading, isError, isSuccess } = useQuery({
+export default function Stats({ startDate }: { startDate: string }) {
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['stats', startDate],
     queryFn: () => getStats(startDate),
   });
-  let stats;
+
+  let stats: Array<{ label: string; value: string | number; icon: React.FunctionComponent }> = [];
+
   if (isSuccess) {
     const { totalRevenue, totalPeopleServed, totalRooms, totalCheckins, averageRoomRate } = data;
+
     stats = [
       {
         label: 'Total Revenue',
@@ -29,7 +35,7 @@ export default function Stats({ startDate }) {
       },
       {
         label: 'Total Rooms',
-        value: totalRooms,
+        value: totalRooms || 'No enough data',
         icon: BsClipboardDataFill,
       },
       {
@@ -39,7 +45,7 @@ export default function Stats({ startDate }) {
       },
       {
         label: 'Average Room Rate',
-        value: `${formatToINR(averageRoomRate)}/night`,
+        value: !averageRoomRate ? 'No enough data' : formatToINR(parseInt(averageRoomRate, 10)),
         icon: BiMath,
       },
     ];
@@ -47,8 +53,7 @@ export default function Stats({ startDate }) {
   return (
     <>
       {isLoading && Array.from({ length: 5 }, () => <Skeleton className="h-[110px]" />)}
-      {isSuccess &&
-        stats.map((stat) => <StatCard key={stat.label} stat={stat} isLoading={isLoading} />)}
+      {isSuccess && stats?.map((stat) => <StatCard key={stat.label} stat={stat} />)}
     </>
   );
 }

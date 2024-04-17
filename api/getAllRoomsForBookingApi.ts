@@ -1,10 +1,24 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable import/extensions */
+/* eslint-disable @typescript-eslint/no-throw-literal */
+import { differenceInDays, format } from 'date-fns';
+import { PostgrestError, PostgrestSingleResponse } from '@supabase/supabase-js';
 import { toast } from '@/shadcn_components/ui/use-toast';
 import supabase from './supabaseClient';
-import { differenceInDays, format } from 'date-fns';
+
+export type RoomsResponse = {
+  id: string;
+  name: string;
+  description: string;
+  regularprice: number;
+  maxcapacity: number;
+  image: string;
+  discount: number;
+};
 
 export default async function getAllRoomsForBooking(
-  startDate: string,
-  endDate: string,
+  startDate: Date | null,
+  endDate: Date | null,
   totalPeople: number
 ) {
   try {
@@ -24,11 +38,16 @@ export default async function getAllRoomsForBooking(
       });
       return [];
     }
-    const { data, error } = await supabase.rpc('get_available_rooms', {
-      start_date: startDate.toISOString(),
-      end_date: endDate.toISOString(),
-      total_people: totalPeople,
-    });
+    const { data, error }: PostgrestSingleResponse<RoomsResponse[]> = await supabase.rpc(
+      'get_available_rooms',
+      {
+        start_date: startDate.toISOString(),
+        end_date: endDate.toISOString(),
+        total_people: totalPeople,
+      }
+    );
+
+    if (!data) throw new Error("Something went wrong. Couldn't get rooms.");
 
     if (data.length === 0) {
       toast({
@@ -44,6 +63,6 @@ export default async function getAllRoomsForBooking(
     if (error) throw error;
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as PostgrestError).message);
   }
 }

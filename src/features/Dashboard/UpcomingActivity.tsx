@@ -1,3 +1,5 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable object-curly-newline */
 /* eslint-disable import/extensions */
 import { useQuery } from '@tanstack/react-query';
 import { format, parseISO, isAfter, isSameDay } from 'date-fns';
@@ -54,7 +56,7 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
 
       <div className="">
         <Button
-          onClick={handleOnClick}
+          onClick={() => handleOnClick()}
           className="text-xs font-semibold bg-gradient-to-r from-teal-200 to-lime-200 min-w-full"
         >
           {isArriving ? 'CHECK IN' : 'CHECK OUT'}

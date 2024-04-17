@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
+import { PostgrestError } from '@supabase/supabase-js';
 import supabase from './supabaseClient';
 
 export default async function getGuestData(guestID: number) {
@@ -7,6 +9,6 @@ export default async function getGuestData(guestID: number) {
     if (error) throw error;
     return data[0];
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as PostgrestError).message);
   }
 }

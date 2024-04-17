@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { Tabs, TabsList, TabsTrigger } from '@/shadcn_components/ui/tabs';
 
 export default function FilterDashboard({

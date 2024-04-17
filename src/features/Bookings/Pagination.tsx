@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import React from 'react';
 import { Button } from '@/shadcn_components/ui/button';
 
@@ -38,15 +39,15 @@ export default function Pagination({
       <div className="space-x-3 mr-10 text-center">
         <Button
           variant="secondary"
-          onClick={handlePrevPage}
+          onClick={() => handlePrevPage()}
           className=" text-xs rounded-3xl"
           disabled={isFirstPage}
         >
           {'<- Previous Page'}
         </Button>
         <Button
-          variant=""
-          onClick={handleNextPage}
+          variant="secondary"
+          onClick={() => handleNextPage()}
           className=" text-xs rounded-3xl bg-purple-300 hover:bg-purple-400"
           disabled={isLastPage}
         >
@@ -56,4 +57,3 @@ export default function Pagination({
     </div>
   );
 }
-

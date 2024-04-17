@@ -1,6 +1,9 @@
+/* eslint-disable no-return-assign */
 import { startOfYear, subMonths, startOfWeek } from 'date-fns';
+import { PostgrestError } from '@supabase/supabase-js';
 import supabase from './supabaseClient';
-export default async function getNumNightsDistribution(range) {
+
+export default async function getNumNightsDistribution(range: string) {
   try {
     let startDate;
     switch (range) {
@@ -26,11 +29,11 @@ export default async function getNumNightsDistribution(range) {
     if (error) {
       throw new Error('Error getting average room rate data');
     }
-    const nightDurationData = {};
+    const nightDurationData: Record<string, unknown> = {};
 
     data?.forEach((bookingDuration) => {
       const nightDuration = bookingDuration.numNights;
-      nightDurationData[nightDuration] = (nightDurationData[nightDuration] || 0) + 1;
+      nightDurationData[nightDuration] = ((nightDurationData[nightDuration] as number) || 0) + 1;
     });
 
     const fillColors = ['#8884d8', '#83a6ed', '#8dd1e1', '#82ca9d', '#a4de6c'];
@@ -41,17 +44,17 @@ export default async function getNumNightsDistribution(range) {
       fill: fillColors[index],
     }));
 
-    const moreThan5Days = Object.keys(nightDurationData)
+    const bookingsMoreThanFiveDays = Object.keys(nightDurationData)
       .filter((stayDuration) => Number(stayDuration) > 5)
-      .reduce((acc, stayDuration) => (acc += nightDurationData[stayDuration]), 0);
+      .reduce((acc, stayDuration) => acc + (nightDurationData[stayDuration] as number), 0);
 
     result.push({
       name: 'More than 5 Days',
-      'Total Bookings': moreThan5Days,
+      'Total Bookings': bookingsMoreThanFiveDays,
       fill: '#ffc658',
     });
     return result;
   } catch (error) {
-    throw new Error(error?.message);
+    throw new Error((error as PostgrestError)?.message);
   }
 }

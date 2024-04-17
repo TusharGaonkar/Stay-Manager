@@ -58,7 +58,7 @@ async function generateBookingFormSchema() {
 
     return schema;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as Error).message);
   }
 }
 

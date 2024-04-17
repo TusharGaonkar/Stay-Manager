@@ -4,7 +4,7 @@ import uploadRoomImage from './roomImageUploadApi';
 
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 
-async function addNewRoom(room: RoomType): Promise<void | undefined> {
+async function addNewRoom(room: Omit<RoomType, 'created_at'>): Promise<void | undefined> {
   try {
     const imageURl = await uploadRoomImage(room);
     const { error } = await supabase

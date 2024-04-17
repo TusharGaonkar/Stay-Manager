@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable import/extensions */
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
@@ -11,7 +13,7 @@ import {
 export default function SortRoomTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedSortOption, setSelectedSortOption] = useState(
-    searchParams.get('sort') || 'price-desc',
+    searchParams.get('sort') || 'price-desc'
   );
 
   useEffect(() => {

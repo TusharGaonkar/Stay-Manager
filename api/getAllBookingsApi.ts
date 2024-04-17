@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
 import supabase from './supabaseClient';
 import type { Database } from './supabase';
 
 const RESULTS_PER_PAGE = 10;
 
-type BookingType = Database['public']['Tables']['bookings']['Row'];
+type BookingType = Database['public']['Tables']['bookings']['Row'] & { guests?: any; rooms?: any };
+
 async function getAllBookings(
   filter: string,
   sortBy: string,

@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/shadcn_components/ui/tabs';
 

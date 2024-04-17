@@ -1,7 +1,10 @@
-import { subMonths, startOfMonth, endOfMonth, startOfYear, startOfWeek } from 'date-fns';
+/* eslint-disable operator-linebreak */
+/* eslint-disable @typescript-eslint/no-throw-literal */
+import { subMonths, startOfYear, startOfWeek } from 'date-fns';
+import { PostgrestError } from '@supabase/supabase-js';
 import supabase from './supabaseClient';
 
-async function getRevenue(startDate) {
+async function getRevenue(startDate: Date) {
   try {
     const { data, error } = await supabase
       .from('bookings')
@@ -13,14 +16,14 @@ async function getRevenue(startDate) {
     if (error) {
       throw new Error('Error getting revenue data');
     }
-    const totalRevenue = data.reduce((acc, booking) => acc + booking.totalPrice, 0);
+    const totalRevenue = data.reduce((acc, booking) => acc + (booking.totalPrice || 0), 0);
     return totalRevenue;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as Error).message);
   }
 }
 
-async function getTotalPeopleServed(startDate) {
+async function getTotalPeopleServed(startDate: Date) {
   try {
     const { data, error } = await supabase
       .from('bookings')
@@ -32,10 +35,10 @@ async function getTotalPeopleServed(startDate) {
     if (error) {
       throw new Error('Error getting total people served data');
     }
-    const totalPeopleServed = data.reduce((acc, booking) => acc + booking.numGuests + 1, 0);
+    const totalPeopleServed = data.reduce((acc, booking) => acc + (booking.numGuests || 0) + 1, 0);
     return totalPeopleServed;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as Error).message);
   }
 }
 
@@ -48,29 +51,33 @@ async function getTotalRooms() {
 
     return count;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as Error).message);
   }
 }
 
 async function getTotalCheckins() {
-  const today = new Date().toISOString();
-
   try {
-    const { data, count, error } = await supabase
+    const { data, error } = await supabase
       .from('bookings')
       .select('numGuests', { count: 'exact' })
       .eq('status', 'checked in');
 
     if (error) throw error;
+
+    if (data.length === 0) {
+      return 0;
+    }
+
+    //  Adding 1 to each booking's number of guests to include the main guest who booked.
     const currentGuests = data.reduce((acc, booking) => acc + booking.numGuests + 1, 0);
 
     return currentGuests;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error((error as PostgrestError).message);
   }
 }
 
-async function getAverageRoomRate(startDate) {
+async function getAverageRoomRate(startDate: Date) {
   try {
     const { data, error } = await supabase
       .from('bookings')
@@ -81,15 +88,20 @@ async function getAverageRoomRate(startDate) {
     if (error) {
       throw new Error('Error getting average room rate data');
     }
-    const totalRoomPrice = data.reduce((acc, booking) => acc + booking.roomPrice, 0);
+
+    if (data.length === 0) {
+      return null;
+    }
+
+    const totalRoomPrice = data.reduce((acc, booking) => acc + booking.roomPrice || 0, 0);
     const averageRoomRate = (totalRoomPrice / data.length).toFixed(2);
     return averageRoomRate;
   } catch (error) {
-    throw new Error(error?.message);
+    throw new Error((error as Error)?.message);
   }
 }
 
-export default async function getStats(range) {
+export default async function getStats(range: string) {
   let startDate;
   if (range === 'This Year') {
     startDate = startOfYear(new Date());
@@ -101,11 +113,14 @@ export default async function getStats(range) {
     startDate = startOfWeek(new Date());
   }
 
-  const totalRevenue = await getRevenue(startDate);
-  const totalPeopleServed = await getTotalPeopleServed(startDate);
-  const totalRooms = await getTotalRooms();
-  const totalCheckins = await getTotalCheckins();
-  const averageRoomRate = await getAverageRoomRate(startDate);
+  const [totalRevenue, totalPeopleServed, totalRooms, totalCheckins, averageRoomRate] =
+    await Promise.all([
+      getRevenue(startDate),
+      getTotalPeopleServed(startDate),
+      getTotalRooms(),
+      getTotalCheckins(),
+      getAverageRoomRate(startDate),
+    ]);
 
   return {
     totalRevenue,
