@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/jsx-wrap-multilines */
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -13,7 +14,6 @@ const AppLayout = lazy(() => import('./ui/AppLayout'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Account = lazy(() => import('./pages/Account'));
 const Rooms = lazy(() => import('./pages/Rooms'));
-const Users = lazy(() => import('./pages/Users'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Login = lazy(() => import('./pages/Login'));
 const BookingsInfo = lazy(() => import('./pages/BookingsInfo'));
@@ -69,15 +69,6 @@ function App() {
                   element={
                     <Suspense fallback={<LoadingSpinner />}>
                       <Rooms />
-                    </Suspense>
-                  }
-                  errorElement={<ErrorPage />}
-                />
-                <Route
-                  path="users"
-                  element={
-                    <Suspense fallback={<LoadingSpinner />}>
-                      <Users />
                     </Suspense>
                   }
                   errorElement={<ErrorPage />}
