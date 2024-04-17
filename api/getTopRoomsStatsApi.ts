@@ -1,7 +1,20 @@
-import supabase from './supabaseClient';
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import { subMonths, startOfWeek, startOfYear } from 'date-fns';
+import { PostgrestError, PostgrestSingleResponse } from '@supabase/supabase-js';
+import supabase from './supabaseClient';
 
-export default async function getTopRoomsStats(range: string, limit = 3) {
+type TopRoomsResponse = {
+  id: number;
+  name: string;
+  regularprice: number;
+  description: string;
+  image: string;
+  bookingcount: number;
+};
+
+export default async function getTopRoomsStats(range: string) {
   let startDate;
   const currentDate = new Date();
 
@@ -24,35 +37,18 @@ export default async function getTopRoomsStats(range: string, limit = 3) {
   }
 
   try {
-    const { data, error } = await supabase
-      .from('bookings')
-      .select('roomID, rooms!inner(name , image , description , regularPrice)')
-      .gte('startDate', startDate.toISOString())
-      .lte('endDate', currentDate.toISOString());
-
-    if (error) throw error;
-    const individualRoomData = {};
-
-    data?.forEach((booking) => {
-      const roomID = booking.roomID;
-      const room = booking.rooms;
-      if (individualRoomData[roomID] === undefined) {
-        individualRoomData[roomID] = {
-          totalBookingCount: 1,
-          roomID,
-          roomDetails: room,
-        };
-      } else {
-        individualRoomData[roomID].totalBookingCount += 1;
+    const { data, error }: PostgrestSingleResponse<TopRoomsResponse[]> = await supabase.rpc(
+      'get_top_rooms',
+      {
+        start_date: startDate.toISOString(),
+        end_date: currentDate.toISOString(),
       }
-    });
-
-    const sortedRoomData = Object.values(individualRoomData).sort(
-      (roomA, roomB) => roomB.totalBookingCount - roomA.totalBookingCount
     );
 
-    return sortedRoomData.slice(0, Math.min(limit, sortedRoomData.length));
+    if (error) throw error;
+
+    return data;
   } catch (error) {
-    throw new Error(error.name);
+    throw new Error((error as PostgrestError | Error).message);
   }
 }
