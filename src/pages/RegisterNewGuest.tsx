@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable object-curly-newline */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable import/no-absolute-path */
+/* eslint-disable import/extensions */
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { Button } from '@/shadcn_components/ui/button';
 import { Card, CardContent } from '@/shadcn_components/ui/card';
-import { cn } from '@/lib/utils';
+import cn from '@/lib/utils';
 import {
   Form,
   FormControl,
@@ -28,33 +34,42 @@ import UseCreateGuest from '@/hooks/useCreateGuest';
 import createGuest from '../../api/addNewGuestApi';
 import { toast } from '@/shadcn_components/ui/use-toast';
 import guestCreateFormSchema from '@/validators/guestCreateFormSchema';
-import receptionist from '/receptionist.svg';
 
 const capitalizeFirstLetter = (str: string): string =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 export default function NewGuest() {
   const [form, handleSubmit] = UseCreateGuest();
-  const [timeoutId, setTimeoutId] = useState(null);
   const navigate = useNavigate();
   const { mutate: addNewGuest, isLoading } = useMutation({
     mutationFn: createGuest,
 
-    onSuccess: (guestID) => {
+    onSuccess: async (guestID) => {
       toast({
         variant: 'default',
         title: 'Guest added successfully',
+        duration: 2000,
       });
 
-      const id = setTimeout(() => {
-        navigate(`${guestID}`);
-      }, 2000);
-      setTimeoutId(id);
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(null), 2000);
+      });
+
+      toast({
+        variant: 'default',
+        title: 'Redirecting to booking page',
+      });
+
+      await new Promise((resolve) => {
+        setTimeout(() => resolve(null), 2000);
+      });
+
+      navigate(`/bookings/newBooking/${guestID}`);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         variant: 'destructive',
-        title: error.message,
+        title: error?.message || 'An error occurred',
       });
     },
   });
@@ -69,21 +84,12 @@ export default function NewGuest() {
     const countryFlag = `https://flagsapi.com/${countryCode}/shiny/64.png`;
     addNewGuest({
       fullName,
-      email,
+      email: email ?? null,
       nationality,
       nationalID,
       countryFlag,
     });
   }
-
-  useEffect(
-    () => () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    },
-    [timeoutId]
-  );
 
   return (
     <div className="flex flex-col mt-8 width-[90%] mx-auto ">
@@ -92,7 +98,7 @@ export default function NewGuest() {
         <Card className="flex p-10 ">
           <CardContent className="flex mx-auto ">
             <div className="flex w-[550px]  h-full items-center ">
-              <img src={receptionist} alt="receptionist" />
+              <img src="../../public/receptionist.svg" alt="receptionist" />
             </div>
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6">
