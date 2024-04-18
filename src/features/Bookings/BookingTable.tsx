@@ -47,25 +47,25 @@ function RenderSkeletonRow(index: number) {
   return (
     <TableRow key={index}>
       <TableCell>
-        <Skeleton className="h-4 w-full" />
+        <Skeleton className="w-full h-4" />
       </TableCell>
       <TableCell>
-        <Skeleton className="h-4 w-full" />
+        <Skeleton className="w-full h-4" />
       </TableCell>
       <TableCell>
-        <Skeleton className="h-4 w-full" />
+        <Skeleton className="w-full h-4" />
       </TableCell>
       <TableCell>
-        <Skeleton className="h-4 w-full" />
+        <Skeleton className="w-full h-4" />
       </TableCell>
       <TableCell>
-        <Skeleton className="h-4 w-full" />
+        <Skeleton className="w-full h-4" />
       </TableCell>
       <TableCell>
-        <Skeleton className="h-4 w-full" />
+        <Skeleton className="w-full h-4" />
       </TableCell>
       <TableCell>
-        <Skeleton className="h-4 w-full" />
+        <Skeleton className="w-full h-4" />
       </TableCell>
     </TableRow>
   );
@@ -157,14 +157,11 @@ export default function BookingTable() {
       <div className="flex justify-end w-[80%] gap-x-2 mb-5">
         <FilterBookingTable setBookingType={setBookingType} setCurrentPage={setCurrentPage} />
         <SortBookingTable setSelectedSortOption={setSelectedSortOption} />
-        <Button
-          onClick={() => navigate('/bookings/newBooking')}
-          className="bg-gradient-to-r from-teal-200 to-lime-200"
-        >
+        <Button onClick={() => navigate('/bookings/newBooking')} className="bg-gradient">
           Book Offline
         </Button>
       </div>
-      <div className="w-full flex mb-6">
+      <div className="flex w-full mb-6">
         <SearchBookings setSearchTerm={setSearchTerm} />
       </div>
       <ScrollArea className="h-[65vh] w-full rounded-md border">

@@ -25,7 +25,7 @@ const queryClient = new QueryClient();
 
 function LoadingSpinner() {
   return (
-    <div className="flex w-full h-screen items-center justify-center">
+    <div className="flex items-center justify-center w-full h-screen">
       <MoonLoader color="#36d7b7" size={40} />
     </div>
   );

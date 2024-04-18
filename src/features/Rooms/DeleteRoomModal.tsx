@@ -26,7 +26,7 @@ export default function DeleteFormModal({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="bg-red-700 text-white hover:bg-red-800">Delete</Button>
+        <Button className="bg-danger text-danger-foreground hover:bg-danger-200">Delete</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -39,7 +39,7 @@ export default function DeleteFormModal({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className={cn(buttonVariants({ variant: 'destructive' }))}
+            className="bg-danger text-danger-foreground hover:bg-danger-200"
             onClick={() => deleteRoom(room.id)}
           >
             Delete Room

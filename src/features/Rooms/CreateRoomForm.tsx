@@ -61,7 +61,7 @@ export default function RoomsCreateForm() {
     <>
       <div className="">
         <Button
-          className="bg-gradient-to-r from-teal-200 to-lime-200"
+          className="bg-gradient"
           onClick={() => {
             setModalOpen(true);
             createForm.reset();

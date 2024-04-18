@@ -13,8 +13,7 @@ export default function SideBar({ sideNavItems }: { sideNavItems: SideNavItemsTy
   const location = useLocation();
 
   return (
-    <div className=" h-screen flex flex-col bg-[#181818] mr-4">
-      <div className="text-3xl font-semibold p-6 text-slate-300">Stay Manager</div>
+    <div className="flex flex-col h-full mr-4 bg-secondary/30">
       {sideNavItems.map(({ label, href, icon: Icon }) => {
         const isActive = location.pathname === href;
 
@@ -23,14 +22,13 @@ export default function SideBar({ sideNavItems }: { sideNavItems: SideNavItemsTy
             to={href}
             key={label}
             className={cn(buttonVariants({ variant: 'ghost' }), 'justify-start', 'text-md', 'p-8', {
-              'bg-violet-400 bg-opacity-90': isActive,
+              'bg-primary': isActive,
               'hover:bg-violet-400 hover:bg-opacity-90': isActive, // Apply highlight style if active
             })}
           >
             <span className="mr-2">
               <Icon />
             </span>
-            {label}
           </Link>
         );
       })}

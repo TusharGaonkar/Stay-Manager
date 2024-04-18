@@ -40,11 +40,11 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
     isSameDay(parseISO(booking.startDate), new Date()) ||
     isAfter(parseISO(booking.startDate), new Date());
   return (
-    <div className="grid grid-cols-4 items-center gap-2 min-w-full justify-center hover:bg-gray-800">
+    <div className="grid items-center justify-center min-w-full grid-cols-4 gap-2 hover:bg-gray-800">
       <div className="">
         <CheckStatus startDate={booking.startDate} endDate={booking.endDate} />
       </div>
-      <div className="col-span-2 flex space-x-2">
+      <div className="flex col-span-2 space-x-2">
         <Avatar className="h-9 w-9">
           <AvatarImage src={booking.guests?.countryFlag} alt="Avatar" />
         </Avatar>
@@ -55,10 +55,7 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
       </div>
 
       <div className="">
-        <Button
-          onClick={() => handleOnClick()}
-          className="text-xs font-semibold bg-gradient-to-r from-teal-200 to-lime-200 min-w-full"
-        >
+        <Button onClick={() => handleOnClick()} className="min-w-full bg-primary">
           {isArriving ? 'CHECK IN' : 'CHECK OUT'}
         </Button>
       </div>
@@ -76,7 +73,7 @@ export default function UpcomingActivity() {
       <CardHeader className="">
         <CardTitle className="text-sm text-bold">Upcoming Timeline</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-rows-5 items-between gap-3">
+      <CardContent className="grid grid-rows-5 gap-3 items-between">
         {isSuccess &&
           data?.map((booking: BookingDataType) => (
             <IndividualTimeline key={booking.id} booking={booking} />

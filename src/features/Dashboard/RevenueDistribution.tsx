@@ -20,7 +20,7 @@ export default function RevenueDistribution({ startDate }: { startDate: string }
 
   return (
     <Skeleton isLoaded={!isLoading}>
-      <Card className="bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-slate-800 via-sky-900 to-fuchsia-600">
+      <Card className="">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 ">
           <CardTitle className="text-sm font-medium">Revenue Distribution</CardTitle>
         </CardHeader>

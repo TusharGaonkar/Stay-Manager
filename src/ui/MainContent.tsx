@@ -5,5 +5,5 @@ type MainContentPropsType = {
 };
 
 export default function MainContent({ children }: MainContentPropsType) {
-  return <div className="text-white flex-1">{children}</div>;
+  return <div className="flex-1 text-white">{children}</div>;
 }

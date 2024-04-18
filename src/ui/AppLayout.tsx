@@ -33,7 +33,7 @@ const sideNavItems: SideNavItemsType[] = [
   },
   {
     label: 'Users',
-    href: '/users',
+    href: '/bookings/newBooking',
     icon: AiOutlineUsergroupAdd,
   },
   {
@@ -45,7 +45,7 @@ const sideNavItems: SideNavItemsType[] = [
 
 export default function AppLayout() {
   return (
-    <div className="flex h-full w-full gap-2">
+    <div className="flex w-full h-full gap-2">
       <Sidebar sideNavItems={sideNavItems} />
       <MainContent>
         <Outlet />

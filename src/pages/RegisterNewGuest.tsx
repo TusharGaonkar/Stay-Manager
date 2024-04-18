@@ -94,14 +94,14 @@ export default function NewGuest() {
   return (
     <div className="flex flex-col mt-8 width-[90%] mx-auto ">
       <div className="">
-        <h2 className="text-3xl font-semibold mb-2">New Booking </h2>
+        <h2 className="self-start text-2xl font-semibold text-gradient">New Booking </h2>
         <Card className="flex p-10 ">
           <CardContent className="flex mx-auto ">
             <div className="flex w-[550px]  h-full items-center ">
               <img src="../../public/receptionist.svg" alt="receptionist" />
             </div>
             <Form {...form}>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="px-6 space-y-4">
                 <FormField
                   control={form.control}
                   name="firstName"
@@ -145,7 +145,7 @@ export default function NewGuest() {
                   control={form.control}
                   name="nationality"
                   render={({ field }) => (
-                    <FormItem className=" w-full">
+                    <FormItem className="w-full ">
                       <FormLabel className="">Nationality</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -162,7 +162,7 @@ export default function NewGuest() {
                                 ? countriesWithCode.find((country) => country.Name === field.value)
                                     ?.Name
                                 : 'Select Country'}
-                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
