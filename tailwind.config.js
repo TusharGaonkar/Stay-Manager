@@ -20,6 +20,7 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        dancing: ['Dancing Script', 'cursive'],
       },
       colors: {
         border: 'hsl(var(--border))',
