@@ -1,6 +1,5 @@
 /* eslint-disable import/extensions */
 import { Link, useLocation } from 'react-router-dom';
-import { buttonVariants } from '@/shadcn_components/ui/button';
 import { cn } from '@/lib/utils';
 
 type SideNavItemsType = {
@@ -13,25 +12,33 @@ export default function SideBar({ sideNavItems }: { sideNavItems: SideNavItemsTy
   const location = useLocation();
 
   return (
-    <div className="flex flex-col h-full mr-4 bg-secondary/30">
-      {sideNavItems.map(({ label, href, icon: Icon }) => {
-        const isActive = location.pathname === href;
+    <div className="bg-secondary/40 h-screen p-3 mr-2">
+      <div className="mt-16 flex flex-col gap-4">
+        {sideNavItems.map(({ label, href, icon: Icon }) => {
+          const isActive = location.pathname === href;
 
-        return (
-          <Link
-            to={href}
-            key={label}
-            className={cn(buttonVariants({ variant: 'ghost' }), 'justify-start', 'text-md', 'p-8', {
-              'bg-primary': isActive,
-              'hover:bg-violet-400 hover:bg-opacity-90': isActive, // Apply highlight style if active
-            })}
-          >
-            <span className="mr-2">
-              <Icon />
-            </span>
-          </Link>
-        );
-      })}
+          return (
+            <div className="relative flex items-center group" key={label}>
+              <Link
+                to={href}
+                className={cn(
+                  'h-12 w-12 flex items-center justify-center rounded-full bg-background hover:bg-primary/40 hover:scale-[1.1] duration-200 ease-linear transition-scale hover:rounded-2xl',
+                  {
+                    'bg-gradient text-background text-white text-3xl rounded-2xl': isActive,
+                  }
+                )}
+              >
+                <span>
+                  <Icon />
+                </span>
+              </Link>
+              <span className="absolute min-w-max left-[70px] rounded-sm tracking-wide font-medium text-xs bg-slate-200 text-black p-1 z-[999] group-hover:scale-100 scale-0 transition-all duration-200">
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
