@@ -48,7 +48,7 @@ export default function Pagination({
         <Button
           variant="secondary"
           onClick={() => handleNextPage()}
-          className="text-xs rounded-full bg-primary/70"
+          className="text-xs rounded-full bg-primary text-black"
           disabled={isLastPage}
         >
           {'Next Page ->'}

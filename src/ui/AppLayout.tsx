@@ -32,7 +32,7 @@ const sideNavItems: SideNavItemsType[] = [
     icon: MdOutlineBedroomChild,
   },
   {
-    label: 'Users',
+    label: 'New Booking',
     href: '/bookings/newBooking',
     icon: AiOutlineUsergroupAdd,
   },

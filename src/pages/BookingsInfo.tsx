@@ -58,8 +58,8 @@ function TotalAmount({ bookingData }: { bookingData: NonNullableFields<BookingTy
   return (
     <div
       className={cn('flex items-center space-x-2 p-4 w-full rounded-sm', {
-        'bg-green-500/70': bookingData?.isPaid,
-        'bg-gradient-to-r from-yellow-600 to-orange-600/70 ': !bookingData?.isPaid,
+        'bg-success/50': bookingData?.isPaid,
+        'bg-danger/40': !bookingData?.isPaid,
       })}
     >
       <span>
@@ -74,10 +74,8 @@ function TotalAmount({ bookingData }: { bookingData: NonNullableFields<BookingTy
         }`}
       </h1>
       <div className="flex-grow" />
-      <span className="">
-        <Badge className="bg-orange-300">
-          {bookingData?.isPaid ? 'Already Paid' : 'UNPAID, Payment on arrival'}
-        </Badge>
+      <span className="text-xs font-bold uppercase">
+        {bookingData?.isPaid ? 'Already Paid' : 'UNPAID, Payment on arrival'}
       </span>
     </div>
   );
@@ -143,8 +141,8 @@ function ActionButton({
           <div className="w-full flex justify-end space-x-2 mt-2">
             <AlertDialog>
               <AlertDialogTrigger>
-                <Button className="bg-red-500/90 hover:bg-red-500 text-white">
-                  DELETE BOOKING
+                <Button className="bg-danger text-foreground hover:bg-red-500/70">
+                  Delete Booking
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -158,7 +156,7 @@ function ActionButton({
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
-                    className="bg-red-500/90 hover:bg-red-500"
+                    className="bg-danger text-foreground hover:bg-red-500/70"
                     onClick={() => handleDelete()}
                   >
                     Confirm Delete
@@ -168,8 +166,8 @@ function ActionButton({
             </AlertDialog>
             <AlertDialog>
               <AlertDialogTrigger disabled={!isChecked}>
-                <Button disabled={!isChecked} className="bg-green-300">
-                  CHECK IN
+                <Button disabled={!isChecked} className="bg-gradient">
+                  Check In
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -181,7 +179,7 @@ function ActionButton({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => handleCheckIn()}>
+                  <AlertDialogAction onClick={() => handleCheckIn()} className="bg-gradient">
                     Confirm Check In
                   </AlertDialogAction>
                 </AlertDialogFooter>
@@ -194,7 +192,7 @@ function ActionButton({
         <div className="w-full flex justify-end space-x-2 mt-2">
           <AlertDialog>
             <AlertDialogTrigger>
-              <Button className="bg-green-300">CHECK OUT</Button>
+              <Button className="bg-gradient">Check Out</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -205,7 +203,7 @@ function ActionButton({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => handleCheckOut()}>
+                <AlertDialogAction onClick={() => handleCheckOut()} className="bg-gradient">
                   Confirm Check Out
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -232,7 +230,7 @@ export default function BookingsInfo() {
     <>
       {isLoading && (
         <div className="w-full h-full flex items-center justify-center">
-          <MoonLoader color="#36d7b7" size={40} />
+          <MoonLoader color="#cdc8ff" size={50} />
         </div>
       )}
       {isSuccess && (
@@ -242,7 +240,7 @@ export default function BookingsInfo() {
               <span>
                 <BsBookmark />
               </span>
-              <h1 className="font-bold text-2xl">{`Booking ID #${bookingData.id}`}</h1>
+              <h1 className="font-bold text-3xl">{`Booking ID #${bookingData.id}`}</h1>
               <span>
                 <Badge className={statusColors[bookingData.status]}>
                   {bookingData.status.toUpperCase()}
@@ -256,7 +254,7 @@ export default function BookingsInfo() {
             {bookingData.status === 'unconfirmed' &&
               differenceInCalendarDays(parseISO(bookingData.startDate), new Date()) < 0 && (
                 <div className="flex">
-                  <h1 className="flex items-center w-full text-sm  bg-[#ff9966]/50 p-2 rounded-sm">
+                  <h1 className="flex items-center w-full text-xs max-w-max bg-warning/95 text-black p-2 rounded-sm">
                     <span className="mr-1">
                       <AiOutlineWarning />
                     </span>
@@ -265,7 +263,7 @@ export default function BookingsInfo() {
                   </h1>
                 </div>
               )}
-            <div className="flex justify-between p-6 rounded-md bg-gradient-to-r from-violet-500 to-fuchsia-500">
+            <div className="flex justify-between p-6 rounded-md bg-blue-600">
               <h1 className="flex items-center">
                 <span className="mr-1">
                   <RiHotelLine />
@@ -329,10 +327,10 @@ export default function BookingsInfo() {
             <div className="flex space-x-2">
               <TotalAmount bookingData={bookingData} />
             </div>
+            <div>
+              <ActionButton status={bookingData.status} bookingID={bookingData.id} />
+            </div>
           </Card>
-          <div>
-            <ActionButton status={bookingData.status} bookingID={bookingData.id} />
-          </div>
         </div>
       )}
     </>

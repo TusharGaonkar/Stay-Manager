@@ -11,8 +11,8 @@ import FilterDashboard from '@/features/Dashboard/FilterDashboard';
 export default function Dashboard() {
   const [startDate, setStartDate] = useState('This Year');
   return (
-    <div className="">
-      <h1 className="p-4 text-2xl font-semibold text-gradient">Main Dashboard</h1>
+    <div className="mt-8 p-1">
+      <h1 className="text-2xl font-bold text-gradient">Main Dashboard</h1>
       <div className="flex justify-end mb-3">
         <FilterDashboard setStartDate={setStartDate} />
       </div>

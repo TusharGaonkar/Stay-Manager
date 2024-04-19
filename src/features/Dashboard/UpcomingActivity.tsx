@@ -19,13 +19,14 @@ type BookingDataType = {
 function CheckStatus({ startDate, endDate }: { startDate: string; endDate: string }) {
   if (isSameDay(parseISO(startDate), new Date()) || isAfter(parseISO(startDate), new Date())) {
     return (
-      <Badge className="bg-gradient-to-b from-sky-400 to-sky-200 min-w-max">
-        {`Arriving  ${format(parseISO(endDate), 'dd MMM')}`}
-      </Badge>
+      <Badge className="bg-[#8BE9FD] min-w-max">{`Arriving  ${format(
+        parseISO(endDate),
+        'dd MMM'
+      )}`}</Badge>
     );
   }
   return (
-    <Badge className="bg-gradient-to-r from-orange-300 to-rose-300 min-w-max">
+    <Badge className="bg-gradient min-w-max">
       {`Departing  ${format(parseISO(endDate), 'dd MMM')}`}
     </Badge>
   );
@@ -55,7 +56,7 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
       </div>
 
       <div className="">
-        <Button onClick={() => handleOnClick()} className="min-w-full bg-primary">
+        <Button onClick={() => handleOnClick()} className="min-w-full bg-[#F8F8F2]">
           {isArriving ? 'CHECK IN' : 'CHECK OUT'}
         </Button>
       </div>

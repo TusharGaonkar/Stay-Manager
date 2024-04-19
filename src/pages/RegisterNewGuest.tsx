@@ -92,10 +92,10 @@ export default function NewGuest() {
   }
 
   return (
-    <div className="flex flex-col mt-8 width-[90%] mx-auto ">
-      <div className="">
-        <h2 className="self-start text-2xl font-semibold text-gradient">New Booking </h2>
-        <Card className="flex p-10 ">
+    <div>
+      <div className="flex flex-col items-center justify-center p-1 mt-8 gap-6">
+        <h2 className="self-start text-2xl font-bold text-gradient">New Booking </h2>
+        <Card className="flex p-10 w-[90%] ">
           <CardContent className="flex mx-auto ">
             <div className="flex w-[550px]  h-full items-center ">
               <img src="../../public/receptionist.svg" alt="receptionist" />
@@ -210,18 +210,14 @@ export default function NewGuest() {
                 />
                 <div className="flex items-end justify-end space-x-3 mt-36">
                   <Button
-                    className="w-[150px] bg-blue-400 hover:bg-blue-400"
+                    className="w-[150px] bg-foreground hover:bg-slate-300"
                     type="button"
                     disabled={isLoading}
                     onClick={() => navigate(-1)}
                   >
                     Cancel
                   </Button>
-                  <Button
-                    className="w-[150px] bg-cyan-100 hover:bg-cyan-300"
-                    type="submit"
-                    disabled={isLoading}
-                  >
+                  <Button className="w-[150px] bg-cyan-300" type="submit" disabled={isLoading}>
                     {'Next->'}
                   </Button>
                 </div>

@@ -36,7 +36,7 @@ export default function MostPopularRooms({ startDate }: { startDate: string }) {
               <SwiperSlide key={id}>
                 <Card isFooterBlurred className="h-[300px]">
                   <CardHeader className="absolute z-10 top-1 flex-col items-start">
-                    <h4 className="text-slate-800 font-bold text-lg drop-shadow-xl bg-slate-200 px-1 rounded-md">
+                    <h4 className="text-slate-800 font-bold text-medium drop-shadow-xl bg-white/80 px-1 rounded-xl">
                       {`#${index + 1} Room-${name}`}
                     </h4>
                     <h5 className="text-black/80 mt-1 rounded-sm bg-slate-200/40 font-medium text-xs drop-shadow-2xl">{`"${description}"`}</h5>

@@ -179,258 +179,251 @@ export default function NewBookings() {
 
   return (
     <>
-      {isLoading && (
-        <div className="flex w-full h-full items-center justify-center">
-          <MoonLoader color="#36d7b7" size={40} />
-        </div>
-      )}
+      {isLoading && <MoonLoader color="#cdc8ff" size={50} />}
       {isSuccess && (
         <>
-          <p className="font-semibold text-2xl flex mt-4 ml-3">
+          <p className="font-semibold text-2xl flex mt-7 ml-3">
             Booking for
-            <span className="flex bg-cyan-500 rounded-xl px-6 mx-2 items-center">
+            <span className="flex bg-cyan-500 rounded-xl mx-2 items-center text-gradient">
               {guestData?.fullName}
               <img src={guestData?.countryFlag} alt="country flag" className="w-6 h-6 ml-2" />
             </span>
           </p>
-          <Card className="grid grid-cols-2 w-[90%] mx-auto mt-6 gap-2">
+          <Card className="grid grid-cols-2 w-[90%] mx-auto  mt-6 gap-8 p-12">
             <div className="flex flex-col space-y-4 justify-center">
               <Image isBlurred isZoomed src={roomImage} className="object-cover h-[600px]" />
             </div>
-            <div className="p-8">
-              <div className="flex flex-col space-y-4">
-                <Form {...form}>
-                  <form onSubmit={handleSubmit(handleBookRoom)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="startDate"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <FormLabel>Check-in Date</FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant="outline"
-                                  className={cn(
-                                    'w-full pl-3 text-left font-normal',
-                                    !field.value && 'text-muted-foreground'
-                                  )}
-                                >
-                                  {field.value ? (
-                                    format(field.value, 'PPP')
-                                  ) : (
-                                    <span>Pick a date</span>
-                                  )}
-                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={(date) => {
-                                  field.onChange(date);
-                                  setStartDate(date ?? null);
-                                }}
-                                disabled={(date) =>
-                                  date.getTime() <
-                                  new Date(new Date().setDate(new Date().getDate() - 1)).getTime()
-                                }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="endDate"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <FormLabel>Check-out Date</FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant="outline"
-                                  className={cn(
-                                    'w-full pl-3 text-left font-normal',
-                                    !field.value && 'text-muted-foreground'
-                                  )}
-                                >
-                                  {field.value ? (
-                                    format(field.value, 'PPP')
-                                  ) : (
-                                    <span>Pick a date</span>
-                                  )}
-                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={(date) => {
-                                  field.onChange(date);
-                                  setEndDate(date ?? null);
-                                }}
-                                disabled={(date) => date.getTime() < new Date().getTime()}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="numGuests"
-                      render={({ field }) => (
-                        <FormItem className="">
-                          <FormLabel className="">Guests along with you</FormLabel>
-                          <FormControl className="">
-                            <Input
-                              placeholder="Enter total guests"
-                              defaultValue={0}
-                              {...field}
-                              type="number"
-                              {...form.register('numGuests', {
-                                valueAsNumber: true,
-                              })}
-                              onChange={(e) => {
-                                if (Number.isNaN(Number(e.target.value))) {
-                                  e.target.value = '0';
-                                  setNumGuests(0);
-                                } else {
-                                  setNumGuests(Number(e.target.value));
-                                }
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="room"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <FormLabel className="">Available Rooms for you</FormLabel>
-                          <FormControl className="">
-                            <Select
-                              onValueChange={(data) => {
-                                const selectedRoom = JSON.parse(data);
-                                field.onChange(selectedRoom);
-                                setRoomSelected(selectedRoom);
-                              }}
-                              defaultValue={field.value}
-                            >
-                              <SelectTrigger className="w-full">
-                                {field.value ? (
-                                  <SelectValue placeholder="Select Room" />
-                                ) : (
-                                  'Select Room'
-                                )}
-                              </SelectTrigger>
-                              <SelectContent>
-                                {getAvailableRoomsQuery.data?.map((room) => (
-                                  <SelectItem key={room.id} value={JSON.stringify(room)}>
-                                    {`Room ${room.name} - (${formatToINR(
-                                      diffDays * room.regularprice
-                                    )} for ${diffDays} days)`}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="observations"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <FormLabel className="">Any observations ?</FormLabel>
-                          <FormControl className="">
-                            <Textarea
-                              placeholder="Please provide any observations to make"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    {breakfastQuery?.data && (
-                      <FormField
-                        control={form.control}
-                        name="hasBreakfast"
-                        render={({ field }) => (
-                          <FormItem
-                            className={cn(
-                              'flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 border-slate-600',
-                              { 'bg-green-700': field.value }
-                            )}
-                          >
+
+            <div className="flex flex-col">
+              <Form {...form}>
+                <form onSubmit={handleSubmit(handleBookRoom)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="startDate"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Check-in Date</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
                             <FormControl>
-                              <Checkbox
-                                checked={field.value}
-                                onCheckedChange={(data) => {
-                                  field.onChange(data);
-                                  setHasBreakfast(!!data);
-                                }}
-                              />
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  'w-full pl-3 text-left font-normal',
+                                  !field.value && 'text-muted-foreground'
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, 'PPP')
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
                             </FormControl>
-                            <div className="space-y-1 leading-none">
-                              <FormLabel>
-                                {`Add Breakfast for ${formatToINR(
-                                  diffDays * breakfastQuery.data
-                                )}?`}
-                              </FormLabel>
-                            </div>
-                          </FormItem>
-                        )}
-                      />
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setStartDate(date ?? null);
+                              }}
+                              disabled={(date) =>
+                                date.getTime() <
+                                new Date(new Date().setDate(new Date().getDate() - 1)).getTime()
+                              }
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                    <div>
-                      {(roomSelected?.discount ?? 0) > 0 ? (
-                        <Badge className="bg-orange-300 mr-2 hover:bg-orange-300">
-                          {`🥳 Congratulations! You've just unlocked a discount of ${formatToINR(
-                            diffDays * (roomSelected?.discount || 0)
-                          )} `}
-                        </Badge>
-                      ) : null}
-                      <p className="mt-4 text-sm font-semibold">
-                        {`Total Cost : ${formatToINR(totalPrice)} ( ${diffDays} nights stay  ${
-                          hasBreakfast ? '+ Breakfast' : ''
-                        })`}
-                      </p>
-                    </div>
-                    <div className="flex space-x-3 justify-end">
-                      <Button
-                        type="button"
-                        onClick={() => navigate('/bookings')}
-                        className="bg-red-500 text-white hover:bg-red-400"
-                      >
-                        {' '}
-                        Cancel Booking&nbsp;
-                      </Button>
-                      <Button type="submit" className="bg-green-200 hover:bg-green-300">
-                        Book Now
-                      </Button>
-                    </div>
-                  </form>
-                </Form>
-              </div>
+                  />
+                  <FormField
+                    control={form.control}
+                    name="endDate"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Check-out Date</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  'w-full pl-3 text-left font-normal',
+                                  !field.value && 'text-muted-foreground'
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, 'PPP')
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setEndDate(date ?? null);
+                              }}
+                              disabled={(date) => date.getTime() < new Date().getTime()}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="numGuests"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormLabel className="">Guests along with you</FormLabel>
+                        <FormControl className="">
+                          <Input
+                            placeholder="Enter total guests"
+                            defaultValue={0}
+                            {...field}
+                            type="number"
+                            {...form.register('numGuests', {
+                              valueAsNumber: true,
+                            })}
+                            onChange={(e) => {
+                              if (Number.isNaN(Number(e.target.value))) {
+                                e.target.value = '0';
+                                setNumGuests(0);
+                              } else {
+                                setNumGuests(Number(e.target.value));
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="room"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel className="">Available Rooms for you</FormLabel>
+                        <FormControl className="">
+                          <Select
+                            onValueChange={(data) => {
+                              const selectedRoom = JSON.parse(data);
+                              field.onChange(selectedRoom);
+                              setRoomSelected(selectedRoom);
+                            }}
+                            defaultValue={field.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              {field.value ? (
+                                <SelectValue placeholder="Select Room" />
+                              ) : (
+                                'Select Room'
+                              )}
+                            </SelectTrigger>
+                            <SelectContent>
+                              {getAvailableRoomsQuery.data?.map((room) => (
+                                <SelectItem key={room.id} value={JSON.stringify(room)}>
+                                  {`Room ${room.name} - (${formatToINR(
+                                    diffDays * room.regularprice
+                                  )} for ${diffDays} days)`}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="observations"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel className="">Any observations ?</FormLabel>
+                        <FormControl className="">
+                          <Textarea
+                            placeholder="Please provide any observations to make"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {breakfastQuery?.data && (
+                    <FormField
+                      control={form.control}
+                      name="hasBreakfast"
+                      render={({ field }) => (
+                        <FormItem
+                          className={cn(
+                            'flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 border-slate-600',
+                            { 'bg-green-700': field.value }
+                          )}
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={(data) => {
+                                field.onChange(data);
+                                setHasBreakfast(!!data);
+                              }}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>
+                              {`Add Breakfast for ${formatToINR(diffDays * breakfastQuery.data)}?`}
+                            </FormLabel>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                  <div>
+                    {(roomSelected?.discount ?? 0) > 0 ? (
+                      <Badge className="bg-primary">
+                        {`Congratulations! You've just unlocked a discount of ${formatToINR(
+                          diffDays * (roomSelected?.discount || 0)
+                        )} `}
+                      </Badge>
+                    ) : null}
+                    <p className="mt-4 text-sm font-semibold">
+                      {`Total Cost : ${formatToINR(totalPrice)} ( ${diffDays} nights stay  ${
+                        hasBreakfast ? '+ Breakfast' : ''
+                      })`}
+                    </p>
+                  </div>
+                  <div className="flex space-x-3 justify-end">
+                    <Button
+                      type="button"
+                      onClick={() => navigate('/bookings')}
+                      className="bg-danger text-white hover:bg-red-400  "
+                    >
+                      {' '}
+                      Cancel Booking&nbsp;
+                    </Button>
+                    <Button type="submit" className="bg-gradient">
+                      Book Now
+                    </Button>
+                  </div>
+                </form>
+              </Form>
             </div>
           </Card>
         </>
