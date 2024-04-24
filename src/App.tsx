@@ -20,8 +20,8 @@ const Rooms = lazy(() => import('./pages/Rooms'));
 const Settings = lazy(() => import('./pages/Settings'));
 const BookingsInfo = lazy(() => import('./pages/BookingsInfo'));
 const Bookings = lazy(() => import('./pages/Bookings'));
-const NewGuest = lazy(() => import('./pages/RegisterNewGuest'));
-const NewBookings = lazy(() => import('./pages/NewBooking'));
+const RegisterNewGuest = lazy(() => import('./pages/RegisterNewGuest'));
+const NewBooking = lazy(() => import('./pages/NewBooking'));
 
 const queryClient = new QueryClient();
 
@@ -102,7 +102,7 @@ function App() {
                   path="bookings/newBooking"
                   element={
                     <Suspense fallback={<LoadingSpinner />}>
-                      <NewGuest />
+                      <RegisterNewGuest />
                     </Suspense>
                   }
                   errorElement={<ErrorPage />}
@@ -111,7 +111,7 @@ function App() {
                   path="bookings/newBooking/:guestID"
                   element={
                     <Suspense fallback={<LoadingSpinner />}>
-                      <NewBookings />
+                      <NewBooking />
                     </Suspense>
                   }
                   errorElement={<ErrorPage />}
