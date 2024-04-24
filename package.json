@@ -1,8 +1,9 @@
 {
-  "name": "hotel-dashboard",
+  "name": "Stay-Manager",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "author": "Tushar Gaonkar (https://github.com/TusharGaonkar)",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
