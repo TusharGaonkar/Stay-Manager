@@ -45,7 +45,7 @@ const sideNavItems: SideNavItemsType[] = [
 
 export default function AppLayout() {
   return (
-    <div className="flex w-full h-full gap-2">
+    <div className="flex items-stretch">
       <Sidebar sideNavItems={sideNavItems} />
       <MainContent>
         <Outlet />

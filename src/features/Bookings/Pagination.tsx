@@ -31,7 +31,7 @@ export default function Pagination({
     : currentPage * DATA_PER_PAGE;
 
   return (
-    <div className="flex justify-between w-full mt-4">
+    <div className="flex justify-between w-full mt-4 mb-4">
       <h1 className="self-start text-sm text-foreground">
         {dataSize ? `Showing results from ${startResult} to ${endResult} of ${dataSize}` : null}
       </h1>
@@ -48,7 +48,7 @@ export default function Pagination({
         <Button
           variant="secondary"
           onClick={() => handleNextPage()}
-          className="text-xs rounded-full bg-primary text-black"
+          className="text-xs text-black rounded-full bg-primary hover:bg-primary/80"
           disabled={isLastPage}
         >
           {'Next Page ->'}

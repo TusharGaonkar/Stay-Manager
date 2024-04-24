@@ -6,16 +6,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NextUIProvider } from '@nextui-org/react';
 import MoonLoader from 'react-spinners/MoonLoader';
-import { ThemeProvider } from './contexts/theme-provider';
+import { ThemeProvider } from './contexts/themeProvider';
+import Login from './features/Authentication/Login';
 import ErrorPage from './pages/ErrorPage';
 import PageNotFound from './pages/PageNotFound';
+import ProtectedRoute from './features/Authentication/ProtectedRoute';
+import UserAuthProvider from './contexts/userAuthProvider';
 
 const AppLayout = lazy(() => import('./ui/AppLayout'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Account = lazy(() => import('./pages/Account'));
 const Rooms = lazy(() => import('./pages/Rooms'));
 const Settings = lazy(() => import('./pages/Settings'));
-const Login = lazy(() => import('./pages/Login'));
 const BookingsInfo = lazy(() => import('./pages/BookingsInfo'));
 const Bookings = lazy(() => import('./pages/Bookings'));
 const NewGuest = lazy(() => import('./pages/RegisterNewGuest'));
@@ -38,10 +40,15 @@ function App() {
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <BrowserRouter>
             <Routes>
+              <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
               <Route
                 element={
                   <Suspense fallback={<LoadingSpinner />}>
-                    <AppLayout />
+                    <UserAuthProvider>
+                      <ProtectedRoute>
+                        <AppLayout />
+                      </ProtectedRoute>
+                    </UserAuthProvider>
                   </Suspense>
                 }
               >
@@ -78,15 +85,6 @@ function App() {
                   element={
                     <Suspense fallback={<LoadingSpinner />}>
                       <Settings />
-                    </Suspense>
-                  }
-                  errorElement={<ErrorPage />}
-                />
-                <Route
-                  path="login"
-                  element={
-                    <Suspense fallback={<LoadingSpinner />}>
-                      <Login />
                     </Suspense>
                   }
                   errorElement={<ErrorPage />}

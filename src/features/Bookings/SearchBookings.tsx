@@ -6,8 +6,10 @@ import { Input } from '@/shadcn_components/ui/input';
 
 export default function SearchBookings({
   setSearchTerm,
+  setCurrentPage,
 }: {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const inputRef = useRef<null | HTMLInputElement>(null);
   const [searchString, setSearchString] = useState('');
@@ -19,12 +21,13 @@ export default function SearchBookings({
   function handleSearch() {
     if (inputRef?.current?.value) {
       setSearchString(inputRef.current.value);
+      setCurrentPage(1); // reset the page number
       setSearchTerm(inputRef.current.value);
     }
   }
   return (
-    <div className="flex flex-col  w-full max-w-sm space-y-1">
-      <div className="flex w-full max-w-sm items-center space-x-2">
+    <div className="flex flex-col w-full max-w-sm space-y-1">
+      <div className="flex items-center w-full max-w-sm space-x-2">
         <Input
           type="text"
           placeholder="Search Bookings by Guest Name..."
@@ -45,7 +48,7 @@ export default function SearchBookings({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              className="h-4 w-4 inline-block ml-2 cursor-pointer"
+              className="inline-block w-4 h-4 ml-2 cursor-pointer"
             >
               <path
                 strokeLinecap="round"

@@ -12,8 +12,8 @@ export default function SideBar({ sideNavItems }: { sideNavItems: SideNavItemsTy
   const location = useLocation();
 
   return (
-    <div className="bg-secondary/40 h-screen p-3 mr-2">
-      <div className="mt-16 flex flex-col gap-4">
+    <div className="p-3 mr-2 bg-secondary/40">
+      <div className="flex flex-col gap-4 mt-16">
         {sideNavItems.map(({ label, href, icon: Icon }) => {
           const isActive = location.pathname === href;
 

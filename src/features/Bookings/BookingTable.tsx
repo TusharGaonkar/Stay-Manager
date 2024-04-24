@@ -154,18 +154,20 @@ export default function BookingTable() {
 
   return (
     <>
-      <div className="flex justify-end w-[80%] gap-x-2 mb-5">
+      <div className="flex flex-col items-start gap-2 mt-6 mr-6 lg:flex-row lg:justify-end">
         <FilterBookingTable setBookingType={setBookingType} setCurrentPage={setCurrentPage} />
-        <SortBookingTable setSelectedSortOption={setSelectedSortOption} />
-        <Button onClick={() => navigate('/bookings/newBooking')} className="bg-gradient">
-          Book Offline
-        </Button>
+        <div className="flex items-center gap-2">
+          <SortBookingTable setSelectedSortOption={setSelectedSortOption} />
+          <Button onClick={() => navigate('/bookings/newBooking')} className="bg-gradient">
+            Book Offline
+          </Button>
+        </div>
       </div>
-      <div className="flex w-full mb-6">
-        <SearchBookings setSearchTerm={setSearchTerm} />
+      <div className="flex w-full mt-6 mb-2">
+        <SearchBookings setSearchTerm={setSearchTerm} setCurrentPage={setCurrentPage} />
       </div>
       <ScrollArea className="h-[65vh] w-full rounded-md border">
-        <Table className="">
+        <Table>
           <TableCaption>
             {(data?.count ?? 0) > 0 ? 'A list of bookings' : 'No Bookings found ⛔'}
           </TableCaption>

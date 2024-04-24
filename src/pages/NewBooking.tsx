@@ -182,15 +182,15 @@ export default function NewBookings() {
       {isLoading && <MoonLoader color="#cdc8ff" size={50} />}
       {isSuccess && (
         <>
-          <p className="font-semibold text-2xl flex mt-7 ml-3">
+          <p className="flex ml-3 text-2xl font-semibold mt-7">
             Booking for
-            <span className="flex bg-cyan-500 rounded-xl mx-2 items-center text-gradient">
+            <span className="flex items-center mx-2 bg-cyan-500 rounded-xl text-gradient">
               {guestData?.fullName}
               <img src={guestData?.countryFlag} alt="country flag" className="w-6 h-6 ml-2" />
             </span>
           </p>
-          <Card className="grid grid-cols-2 w-[90%] mx-auto  mt-6 gap-8 p-12">
-            <div className="flex flex-col space-y-4 justify-center">
+          <Card className="grid grid-cols-1 lg:grid-cols-2 w-[90%] mx-auto  mt-6 gap-8 p-12">
+            <div className="flex flex-col justify-center space-y-4">
               <Image isBlurred isZoomed src={roomImage} className="object-cover h-[600px]" />
             </div>
 
@@ -218,7 +218,7 @@ export default function NewBookings() {
                                 ) : (
                                   <span>Pick a date</span>
                                 )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -263,7 +263,7 @@ export default function NewBookings() {
                                 ) : (
                                   <span>Pick a date</span>
                                 )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -374,7 +374,7 @@ export default function NewBookings() {
                         <FormItem
                           className={cn(
                             'flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 border-slate-600',
-                            { 'bg-green-700': field.value }
+                            { 'bg-secondary': field.value }
                           )}
                         >
                           <FormControl>
@@ -409,11 +409,11 @@ export default function NewBookings() {
                       })`}
                     </p>
                   </div>
-                  <div className="flex space-x-3 justify-end">
+                  <div className="flex justify-end space-x-3">
                     <Button
                       type="button"
                       onClick={() => navigate('/bookings')}
-                      className="bg-danger text-white hover:bg-red-400  "
+                      className="text-white bg-danger hover:bg-red-400 "
                     >
                       {' '}
                       Cancel Booking&nbsp;

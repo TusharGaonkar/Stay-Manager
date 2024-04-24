@@ -141,10 +141,11 @@ export default function RoomsTable({
           <TableHeader>
             <TableRow>
               <TableHead>{null}</TableHead>
-              <TableHead className="">Room</TableHead>
+              <TableHead>Room</TableHead>
               <TableHead>Max Capacity</TableHead>
               <TableHead>Price</TableHead>
-              <TableHead className="">Discount</TableHead>
+              <TableHead>Discount</TableHead>
+              <TableHead>{null}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

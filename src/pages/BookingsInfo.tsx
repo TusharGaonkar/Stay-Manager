@@ -129,7 +129,7 @@ function ActionButton({
     <>
       {status === 'unconfirmed' && (
         <div className="flex flex-col">
-          <div className="flex items-center space-x-2 p-3">
+          <div className="flex items-center p-3 space-x-2">
             <Checkbox id="confirm-pay" onClick={() => setIsChecked(!isChecked)} />
             <label
               htmlFor="confirm-pay"
@@ -138,7 +138,7 @@ function ActionButton({
               I confirm that the guest has paid the full amount for the booking upon arrival.
             </label>
           </div>
-          <div className="w-full flex justify-end space-x-2 mt-2">
+          <div className="flex justify-end w-full mt-2 space-x-2">
             <AlertDialog>
               <AlertDialogTrigger>
                 <Button className="bg-danger text-foreground hover:bg-red-500/70">
@@ -189,7 +189,7 @@ function ActionButton({
         </div>
       )}
       {status === 'checked in' && (
-        <div className="w-full flex justify-end space-x-2 mt-2">
+        <div className="flex justify-end w-full mt-2 space-x-2">
           <AlertDialog>
             <AlertDialogTrigger>
               <Button className="bg-gradient">Check Out</Button>
@@ -229,18 +229,18 @@ export default function BookingsInfo() {
   return (
     <>
       {isLoading && (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="flex items-center justify-center w-full h-full">
           <MoonLoader color="#cdc8ff" size={50} />
         </div>
       )}
       {isSuccess && (
-        <div className="w-[80%] mx-auto mt-16">
-          <Card className="flex flex-col space-y-8 p-6">
-            <div className="flex space-x-3 items-center">
+        <div className="w-[80%] mx-auto mt-16 h-screen">
+          <Card className="flex flex-col p-6 space-y-8">
+            <div className="flex items-center space-x-3">
               <span>
                 <BsBookmark />
               </span>
-              <h1 className="font-bold text-3xl">{`Booking ID #${bookingData.id}`}</h1>
+              <h1 className="text-3xl font-bold">{`Booking ID #${bookingData.id}`}</h1>
               <span>
                 <Badge className={statusColors[bookingData.status]}>
                   {bookingData.status.toUpperCase()}
@@ -254,7 +254,7 @@ export default function BookingsInfo() {
             {bookingData.status === 'unconfirmed' &&
               differenceInCalendarDays(parseISO(bookingData.startDate), new Date()) < 0 && (
                 <div className="flex">
-                  <h1 className="flex items-center w-full text-xs max-w-max bg-warning/95 text-black p-2 rounded-sm">
+                  <h1 className="flex items-center w-full p-2 text-xs text-black rounded-sm max-w-max bg-warning/95">
                     <span className="mr-1">
                       <AiOutlineWarning />
                     </span>
@@ -263,14 +263,14 @@ export default function BookingsInfo() {
                   </h1>
                 </div>
               )}
-            <div className="flex justify-between p-6 rounded-md bg-blue-600">
+            <div className="flex justify-between p-6 bg-blue-600 rounded-md">
               <h1 className="flex items-center">
                 <span className="mr-1">
                   <RiHotelLine />
                 </span>
                 {`${bookingData.numNights} Night stay in Room ${bookingData.rooms.name}`}
               </h1>
-              <h1 className="font-semibold flex items-center">
+              <h1 className="flex items-center font-semibold">
                 <span className="mr-1">
                   <AiOutlineCalendar />
                 </span>
@@ -280,7 +280,7 @@ export default function BookingsInfo() {
                 )}`}
               </h1>
             </div>
-            <div className="flex space-x-1 items-center font-semibold">
+            <div className="flex items-center space-x-1 font-semibold">
               <span>
                 <BiTimeFive />
               </span>
@@ -288,17 +288,17 @@ export default function BookingsInfo() {
                 {`Booked on ${format(parseISO(bookingData.created_at), 'dd MMM yyyy hh:mm a')}`}
               </h1>
             </div>
-            <div className="flex space-x-2 items-center">
+            <div className="flex items-center space-x-2">
               <img width="40" height="40" src={bookingData.guests.countryFlag} alt="country-flag" />
               <h1 className="font-semibold">{`${bookingData.guests.fullName}`}</h1>
               <h1>{`+ ${bookingData.numGuests} guest`}</h1>
-              <h1 className="text-slate-300 flex items-center">
+              <h1 className="flex items-center text-slate-300">
                 <span className="mr-1">
                   <AiOutlineMail />
                 </span>
                 {`${bookingData.guests.email}`}
               </h1>
-              <h1 className="text-slate-300 flex items-center">
+              <h1 className="flex items-center text-slate-300">
                 <span className="mr-1">
                   <BiUserCheck />
                 </span>
@@ -306,7 +306,7 @@ export default function BookingsInfo() {
                 <span className="ml-2">{bookingData.guests.nationalID}</span>
               </h1>
             </div>
-            <div className="flex space-x-1 items-center font-semibold">
+            <div className="flex items-center space-x-1 font-semibold">
               <span>
                 <MdOutlineFreeBreakfast />
               </span>
@@ -315,7 +315,7 @@ export default function BookingsInfo() {
                 <span className="text-slate-300">{bookingData.hasBreakfast ? 'Yes' : 'No'}</span>
               </h1>
             </div>
-            <div className="flex space-x-1 items-center">
+            <div className="flex items-center space-x-1">
               <span>
                 <AiOutlinePushpin />
               </span>

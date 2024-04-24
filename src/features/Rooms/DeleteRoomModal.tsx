@@ -1,6 +1,5 @@
 /* eslint-disable import/extensions */
 import { Database } from 'api/supabase';
-import { cn } from '@/lib/utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/shadcn_components/ui/alert-dialog';
-import { Button, buttonVariants } from '@/shadcn_components/ui/button';
+import { Button } from '@/shadcn_components/ui/button';
 
 type RoomType = Database['public']['Tables']['rooms']['Row'];
 

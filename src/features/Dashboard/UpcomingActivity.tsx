@@ -16,17 +16,18 @@ type BookingDataType = {
   endDate: string;
   guests: { fullName: string; email: string; countryFlag: string };
 };
+
 function CheckStatus({ startDate, endDate }: { startDate: string; endDate: string }) {
   if (isSameDay(parseISO(startDate), new Date()) || isAfter(parseISO(startDate), new Date())) {
     return (
-      <Badge className="bg-[#8BE9FD] min-w-max">{`Arriving  ${format(
+      <Badge className="bg-[#8BE9FD] hover:bg-[#8BE9FD] min-w-max">{`Arriving  ${format(
         parseISO(endDate),
         'dd MMM'
       )}`}</Badge>
     );
   }
   return (
-    <Badge className="bg-gradient min-w-max">
+    <Badge className="bg-[#FFB86C] min-w-max hover:bg-[#FFB86C]">
       {`Departing  ${format(parseISO(endDate), 'dd MMM')}`}
     </Badge>
   );
@@ -34,14 +35,17 @@ function CheckStatus({ startDate, endDate }: { startDate: string; endDate: strin
 
 function IndividualTimeline({ booking }: { booking: BookingDataType }) {
   const navigate = useNavigate();
+
   function handleOnClick() {
     navigate(`/bookings/bookingInfo/${booking.id}`);
   }
+
   const isArriving =
     isSameDay(parseISO(booking.startDate), new Date()) ||
     isAfter(parseISO(booking.startDate), new Date());
+
   return (
-    <div className="grid items-center justify-center min-w-full grid-cols-4 gap-2 hover:bg-gray-800">
+    <div className="grid items-center justify-center min-w-full grid-cols-4 gap-2">
       <div className="">
         <CheckStatus startDate={booking.startDate} endDate={booking.endDate} />
       </div>
@@ -49,14 +53,17 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
         <Avatar className="h-9 w-9">
           <AvatarImage src={booking.guests?.countryFlag} alt="Avatar" />
         </Avatar>
-        <div className="">
+        <div>
           <h1 className="text-sm">{booking.guests.fullName}</h1>
           <h1 className="text-xs text-slate-400">{booking.guests.email}</h1>
         </div>
       </div>
 
       <div className="">
-        <Button onClick={() => handleOnClick()} className="min-w-full bg-[#F8F8F2]">
+        <Button
+          onClick={() => handleOnClick()}
+          className="min-w-full bg-[#F8F8F2] hover:bg-slate-300"
+        >
           {isArriving ? 'CHECK IN' : 'CHECK OUT'}
         </Button>
       </div>
