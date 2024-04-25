@@ -47,7 +47,7 @@ export default async function getNumNightsDistribution(range: string) {
     result.unshift({
       name: '',
       'Total Bookings': 0,
-      fill: '',
+      fill: '#130D26',
     });
 
     const bookingsMoreThanFiveDays = Object.keys(nightDurationData)
@@ -57,7 +57,7 @@ export default async function getNumNightsDistribution(range: string) {
     result.push({
       name: 'More than 5 Days',
       'Total Bookings': bookingsMoreThanFiveDays,
-      fill: '#130D26',
+      fill: '#ffc658',
     });
 
     return result;
