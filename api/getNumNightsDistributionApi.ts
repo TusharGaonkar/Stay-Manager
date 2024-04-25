@@ -57,7 +57,7 @@ export default async function getNumNightsDistribution(range: string) {
     result.push({
       name: 'More than 5 Days',
       'Total Bookings': bookingsMoreThanFiveDays,
-      fill: '#ffc658',
+      fill: '#130D26',
     });
 
     return result;
