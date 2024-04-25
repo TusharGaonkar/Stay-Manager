@@ -37,9 +37,8 @@ export default function UserAuthProvider({ children }: { children: React.ReactNo
       });
     } else if (isSuccess && !userData) {
       toast({
-        title: 'Error',
-        description: 'You are unauthorized to access this page.',
-        variant: 'destructive',
+        title: 'Info',
+        description: 'Please login to continue.',
       });
     }
   }, [isError, isSuccess, userData]);
