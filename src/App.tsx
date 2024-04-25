@@ -9,7 +9,6 @@ import MoonLoader from 'react-spinners/MoonLoader';
 import { ThemeProvider } from './contexts/themeProvider';
 import Login from './features/Authentication/Login';
 import ErrorPage from './pages/ErrorPage';
-import PageNotFound from './pages/PageNotFound';
 import ProtectedRoute from './features/Authentication/ProtectedRoute';
 import UserAuthProvider from './contexts/userAuthProvider';
 
@@ -125,7 +124,11 @@ function App() {
                   }
                   errorElement={<ErrorPage />}
                 />
-                <Route path="*" element={<PageNotFound />} errorElement={<ErrorPage />} />
+                <Route
+                  path="*"
+                  element={<Navigate to="dashboard" />}
+                  errorElement={<ErrorPage />}
+                />
               </Route>
             </Routes>
           </BrowserRouter>
