@@ -44,6 +44,12 @@ export default async function getNumNightsDistribution(range: string) {
       fill: fillColors[index],
     }));
 
+    result.unshift({
+      name: '',
+      'Total Bookings': 0,
+      fill: '',
+    });
+
     const bookingsMoreThanFiveDays = Object.keys(nightDurationData)
       .filter((stayDuration) => Number(stayDuration) > 5)
       .reduce((acc, stayDuration) => acc + (nightDurationData[stayDuration] as number), 0);
@@ -53,6 +59,7 @@ export default async function getNumNightsDistribution(range: string) {
       'Total Bookings': bookingsMoreThanFiveDays,
       fill: '#ffc658',
     });
+
     return result;
   } catch (error) {
     throw new Error((error as PostgrestError)?.message);
