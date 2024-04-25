@@ -26,8 +26,10 @@ import ForgotPassword from './ForgotPassword';
 function LoginForm() {
   const form = useForm<LoginFormSchemaType>({
     defaultValues: {
-      email: import.meta.env.VITE_ADMIN_EMAIL,
-      password: import.meta.env.VITE_ADMIN_PASSWORD,
+      email:
+        (import.meta as ImportMeta & { env: Record<string, string> }).env.VITE_ADMIN_EMAIL || '',
+      password:
+        (import.meta as ImportMeta & { env: Record<string, string> }).env.VITE_ADMIN_PASSWORD || '',
     },
     resolver: zodResolver(loginFormSchema),
   });
