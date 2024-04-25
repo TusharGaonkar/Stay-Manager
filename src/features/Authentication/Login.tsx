@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable consistent-return */
 /* eslint-disable import/extensions */
 /* eslint-disable react/jsx-props-no-spreading */
@@ -24,6 +25,10 @@ import ForgotPassword from './ForgotPassword';
 
 function LoginForm() {
   const form = useForm<LoginFormSchemaType>({
+    defaultValues: {
+      email: import.meta.env.VITE_ADMIN_EMAIL,
+      password: import.meta.env.VITE_ADMIN_PASSWORD,
+    },
     resolver: zodResolver(loginFormSchema),
   });
 
