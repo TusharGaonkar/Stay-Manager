@@ -6,10 +6,8 @@
 <br />
 <div align="center">
   <a href="https://staymanager.netflify.app">
-    <img src="./public/StayManagerLogo.jpg" alt="Logo" width="80" height="80">
+    <img src="./public/StayManagerTitle.png" alt="Logo">
   </a>
-
-  <h3 align="center">Stay Manager</h3>
 
   <p align="center">
    An open-source, zero-cost accommodation management solution
@@ -62,7 +60,7 @@ Stay Manager is an open-source, zero-cost accommodation management solution craf
 
 ### Built With
 
-Tech stack of `Stay Manager-(v1.0.0)`
+Tech stack of `Stay Manager (v-1.0.0)`
 
 [![Typescript](https://img.shields.io/badge/Typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
