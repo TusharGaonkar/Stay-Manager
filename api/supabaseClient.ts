@@ -1,7 +1,9 @@
 /* eslint-disable operator-linebreak */
 import { createClient } from '@supabase/supabase-js';
 
-export const supabaseUrl = 'https://vmhotzmovgfkkcbozoey.supabase.co';
+export const supabaseUrl =
+  (import.meta as ImportMeta & { env: Record<string, string> }).env.VITE_SUPABASE_URL || '';
+
 const supabaseKey =
   (import.meta as ImportMeta & { env: Record<string, string> }).env.VITE_SUPABASE_KEY || '';
 
