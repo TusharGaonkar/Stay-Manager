@@ -1,5 +1,3 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-
 <a name="readme-top"></a>
 
 <!-- PROJECT LOGO -->
@@ -11,44 +9,15 @@
 
   <p align="center">
    An open-source, zero-cost accommodation management solution
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+  </p>
+    <a href="https://staymanager.netflify.app">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/TusharGaonkar/Stay-Manager/issues/new">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/TusharGaonkar/Stay-Manager/issues/new">Request Feature</a>
   </p>
   
 </div>
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
 
 <!-- ABOUT THE PROJECT -->
 
@@ -60,7 +29,7 @@ Stay Manager is an open-source, zero-cost accommodation management solution craf
 
 ### Built With
 
-Tech stack of `Stay Manager (v-1.0.0)`
+Tech stack of `Stay Manager(v-1.0.0)`
 
 [![Typescript](https://img.shields.io/badge/Typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -79,72 +48,193 @@ Tech stack of `Stay Manager (v-1.0.0)`
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Before you begin, make sure you have the following prerequisites:
 
-- npm
-  ```sh
-  npm install npm@latest -g
-  ```
+- [Node.js](https://nodejs.org/) version 20 or greater installed on your system.
+- [Supabase](https://supabase.io/) account.
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+1. Clone the repository by running the following command in your terminal or command prompt:
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+```sh
+git clone https://github.com/TusharGaonkar/Stay-Manager.git
+```
+
+2.Navigate to the cloned repository
+
+```sh
+cd Stay-Manager
+```
+
+3.Install the dependencies
+
+```sh
+npm install
+```
+
+### Setting up the Backend
+
+1. Create a Supabase project with name `Stay Manager`
+
+   [![Create Supabase project](https://img.shields.io/badge/Create_Supabase_project-fffff?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+
+![Step 1](docs/Step-1.png)
+
+2. Copy the project key and URL from the console
+
+![Step 1](docs/Step-2.png)
+
+- Open the `.env.txt` file in the root directory of the project.
+- Replace the placeholder values in the file:
+
+```sh
+VITE_SUPABASE_KEY = 'YOUR_SUPABASE_KEY'
+
+VITE_SUPABASE_URL = 'YOUR_SUPABASE_URL'
+
+VITE_CURRENCY_LOCALE = "en-IN"
+
+VITE_CURRENCY = "INR"
+```
+
+To view all the supported `VITE_CURRENCY_FORMAT` values, check [here](https://gist.github.com/ncreated/9934896)
+
+To view all the supported `VITE_CURRENCY` values, check [here](https://www.iban.com/currency-codes)
+
+- Rename the `.env.txt` file to `.env`
+- **Important**: Do not share your `.env` file with anyone as it contains sensitive information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- USAGE EXAMPLES -->
+3. Creating Storage Bucket
 
-## Usage
+- Click on `Storage` from the sidebar.
+- Create a new Supabase storage with the name`rooms`
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+![Step 3](docs/Step-3.png)
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+### Creating Tables and PostgreSQL Functions
+
+- Navigate to the SQL Editor in the sidebar.
+- Create two queries named `Functions` and `Tables`
+- Copy the queries from [functions.sql](setup/functions.sql) and paste it into the `Functions` query editor.
+- Copy the content of the [tables.sql](/setup/tables.sql) and paste it into the `Tables` query editor.
+- Click on the `Run` button to execute the queries
+
+![Step 4](docs/Step-4.png)
+
+### Adding Authentication
+
+- From the sidebar, select `Authentication`
+- Click on `Add user`
+
+![Step 5](docs/Step-5.png)
+
+- Provide an admin `email` and `password`
+
+![Step 6](docs/Step-6.png)
+
+- Follow any additional steps or prompts to complete the authentication setup
+
+### Configuring Reset Password
+
+- Click on the `Email Templates` tab in the sidebar in `Authentication`
+- Move to `Reset password` tab
+- Replace the `Source` with with the following message body and save it
+
+```html
+<h2>Reset Your Stay Manager Password</h2>
+<p>This is a one-time sign-in link for your account. Follow this URL to reset the password:</p>
+<p>
+  Go to <strong>Settings</strong>, then in the <strong>Account Settings</strong>, update your
+  password!
+</p>
+<p><a href="{{ .ConfirmationURL }}">Reset Password</a></p>
+```
+
+![Step 7](docs/Step-7.png)
+
+### Enabling Row Level Security (RLS)
+
+- Navigate to `Tables`
+- Click on the `Enable RLS` button
+
+![Step 8.1](docs/Step-8.1.png)
+
+- Select `authenticated role` and `Impersonate` with your admin account created in the above steps
+
+-- To be written
+
+- **Repeat the steps for all the tables**
+
+### Running the server locally
+
+To run the server locally, follow these steps:
+
+- Navigate to the root directory of the project.
+- Run the following command:
+
+  ```sh
+  npm run dev
+  ```
+
+- You can access Stay Manager at `localhost:5173`
+
+- Login with your admin credentials, try adding a new room and new booking for yourself and see the changes live in real-time
+
+- Once you have verified the setup is working, it's time to deploy the project
+
+### Deploying Stay Manager
+
+- To build manually and preview use
+
+```sh
+npm run build && npm run preview
+```
+
+The build files will be located in the `/dist` folder, and the app will be live at `localhost:4173`
+
+Create a remote Github repository for your local Stay Manager setup
+
+### Deploying to Netlify
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://netlify.com)
+
+- To deploy to Netlify from Github please refer this [doc](https://docs.netlify.com/site-deploys/create-deploys/)
+- Remember to add entries for all the environment variables in your build configuration settings
+
+### Deploying to Vercel
+
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com)
+
+- To deploy to Vercel please refer this [doc](https://vercel.com/docs/deployments/git/vercel-for-github)
+
+- Rename the `/api` folder to `supabase-api` or similar other than `api` if you get the following error message
+
+`Error: No more than 12 Serverless Functions can be added to a Deployment on the Hobby plan. Create a team (Pro plan) to deploy more`.
+
+as Vercel treats all the files inside the `/api` folder as Serverless Functions.
+
+- After renaming, enable your IDE to automatically update the paths in the current files importing functions from the `/api` folder
+
+- Remember to add entries for all the environment variables in your build configuration settings
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- ROADMAP -->
+## Configuring the Domain in Supabase console
 
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-  - [ ] Chinese
-  - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+- Navigate to `Authentication` in your Supabase project
+- From the sidebar, select `URL Configuration`
+- Enter your domain name in the `Site URL` field
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+If you have a suggestion that would make this better, please fork the repo and create a pull request.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -154,70 +244,8 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- LICENSE -->
-
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTACT -->
-
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Feel free to reach out if you have any queries or suggestions 🤗.
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
-- [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com
+Tushar Gaonkar - gaonkar.tushar01@gmail.com
