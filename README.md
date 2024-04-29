@@ -3,14 +3,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://staymanager.netflify.app">
+  <a href="https://staymanager.netlify.app">
     <img src="./public/StayManagerTitle.png" alt="Logo">
   </a>
 
   <p align="center">
    An open-source, zero-cost accommodation management solution
   </p>
-    <a href="https://staymanager.netflify.app">View Demo</a>
+    <a href="https://staymanager.netlify.app">View Demo</a>
     ·
     <a href="https://github.com/TusharGaonkar/Stay-Manager/issues/new">Report Bug</a>
     ·
