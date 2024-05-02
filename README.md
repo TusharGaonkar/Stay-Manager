@@ -120,8 +120,8 @@ To view all the supported `VITE_CURRENCY` values, check [here](https://www.iban.
 
 - Navigate to the SQL Editor in the sidebar.
 - Create two queries named `Functions` and `Tables`
-- Copy the queries from [functions.sql](setup/functions.sql) and paste it into the `Functions` query editor.
-- Copy the content of the [tables.sql](/setup/tables.sql) and paste it into the `Tables` query editor.
+- Copy the queries from [Functions.sql](setup/Functions.sql) and paste it into the `Functions` query editor.
+- Copy the content of the [Tables.sql](/setup/Tables.sql) and paste it into the `Tables` query editor.
 - Click on the `Run` button to execute the queries
 
 ![Step 4](docs/Step-4.png)
