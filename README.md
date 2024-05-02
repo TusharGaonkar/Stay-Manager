@@ -159,14 +159,33 @@ To view all the supported `VITE_CURRENCY` values, check [here](https://www.iban.
 
 ### Enabling Row Level Security (RLS)
 
-- Navigate to `Tables`
-- Click on the `Enable RLS` button
+In order to enable Row Level Security (RLS), to prevent unauthorized access to data, you need to create policies for each of the methods
 
-![Step 8.1](docs/Step-8.1.png)
+- Navigate to `Authentication`
+- Go to `Policies`
+- Click on `Create policy` on the table
+- For each of the methods `SELECT`, `INSERT`, `UPDATE`, `DELETE`,
+  create the policies for the target role of `authenticated` as shown below and save the policies individually
 
-- Select `authenticated role` and `Impersonate` with your admin account created in the above steps
+`SELECT` Policy
 
--- To be written
+![Step 10](docs/Step-10.png)
+
+`INSERT` Policy
+
+![Step 10](docs/Step-11.png)
+
+`UPDATE` Policy
+
+![Step 10](docs/Step-12.png)
+
+`DELETE` Policy
+
+![Step 10](docs/Step-13.png)
+
+- Once all the policies are created, click on `Enable RLS`
+
+![Step 14](docs/Step-14.png)
 
 - **Repeat the steps for all the tables**
 
@@ -228,9 +247,13 @@ as Vercel treats all the files inside the `/api` folder as Serverless Functions.
 
 - Navigate to `Authentication` in your Supabase project
 - From the sidebar, select `URL Configuration`
-- Enter your domain name in the `Site URL` field
+- Enter your domain name in the `Site URL` field, here our domain is `staymanager.netlify.app`
+
+![Step 15](docs/Step-15.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+Done! you have successfully deployed your own Stay Manager instance ⚡👏.
 
 ## Contributing
 
@@ -246,6 +269,6 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ## Contact
 
-Feel free to reach out if you have any queries or suggestions 🤗.
+Feel free to reach out if you have any queries or suggestions to improve👍
 
 Tushar Gaonkar - gaonkar.tushar01@gmail.com
