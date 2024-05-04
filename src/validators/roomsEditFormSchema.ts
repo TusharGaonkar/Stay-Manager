@@ -25,9 +25,19 @@ const roomsEditFormSchema = z
         return true;
       }, 'Only .jpg, .jpeg, .png and .webp formats are supported.'),
   })
-  .refine((data) => data?.discount && data?.regularPrice && data.regularPrice > data.discount, {
-    message: 'Discount should be lesser than regular price',
-    path: ['discount'],
-  });
+  .refine(
+    (data) => {
+      if (data?.discount == undefined) {
+        // check for both null and undefined as null == undefined
+        return true;
+      }
+
+      return data?.regularPrice > data?.discount;
+    },
+    {
+      message: 'Discount should be lesser than regular price',
+      path: ['discount'],
+    }
+  );
 
 export default roomsEditFormSchema;
