@@ -53,9 +53,9 @@ function IndividualTimeline({ booking }: { booking: BookingDataType }) {
         <Avatar className="h-9 w-9">
           <AvatarImage src={booking.guests?.countryFlag} alt="Avatar" />
         </Avatar>
-        <div>
-          <h1 className="text-sm">{booking.guests.fullName}</h1>
-          <h1 className="text-xs text-slate-400">{booking.guests.email}</h1>
+        <div className="overflow-hidden">
+          <p className="text-sm truncate">{booking.guests.fullName}</p>
+          <p className="text-sm truncate text-slate-400">{booking.guests.email}</p>
         </div>
       </div>
 

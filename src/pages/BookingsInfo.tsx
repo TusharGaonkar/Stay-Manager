@@ -14,13 +14,9 @@ import {
   AiOutlinePushpin,
   AiOutlineWarning,
 } from 'react-icons/ai';
-
 import { BiUserCheck, BiTimeFive } from 'react-icons/bi';
 import { MdOutlineFreeBreakfast } from 'react-icons/md';
-
 import { BsBookmark } from 'react-icons/bs';
-
-import { TbCurrencyRupeeNepalese } from 'react-icons/tb';
 import { useState } from 'react';
 import MoonLoader from 'react-spinners/MoonLoader';
 import { Button } from '@/shadcn_components/ui/button';
@@ -62,9 +58,6 @@ function TotalAmount({ bookingData }: { bookingData: NonNullableFields<BookingTy
         'bg-danger/40': !bookingData?.isPaid,
       })}
     >
-      <span>
-        <TbCurrencyRupeeNepalese />
-      </span>
       <h1 className="font-semibold">{`Total Amount: ${formatToINR(bookingData.totalPrice)}`}</h1>
       <h1 className="text-sm">
         {`(Room Price : ${formatToINR(bookingData.totalPrice - bookingData.extrasPrice)} ${
@@ -229,7 +222,7 @@ export default function BookingsInfo() {
   return (
     <>
       {isLoading && (
-        <div className="flex items-center justify-center w-full h-full">
+        <div className="flex items-center justify-center w-full h-screen">
           <MoonLoader color="#cdc8ff" size={50} />
         </div>
       )}

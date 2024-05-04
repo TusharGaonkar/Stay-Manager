@@ -19,7 +19,7 @@ export default function MostPopularRooms({ startDate }: { startDate: string }) {
   return (
     <>
       {isSuccess && data?.length === 0 && (
-        <h1 className="text-sm text-slate-200 font-semibold text-center">
+        <h1 className="text-sm font-semibold text-center text-slate-200">
           No bookings found in this date range
         </h1>
       )}
@@ -35,20 +35,22 @@ export default function MostPopularRooms({ startDate }: { startDate: string }) {
             {data?.map(({ id, name, regularprice, description, image, bookingcount }, index) => (
               <SwiperSlide key={id}>
                 <Card isFooterBlurred className="h-[300px]">
-                  <CardHeader className="absolute z-10 top-1 flex-col items-start">
-                    <h4 className="text-slate-800 font-bold text-medium drop-shadow-xl bg-white/80 px-1 rounded-xl">
+                  <CardHeader className="absolute z-10 flex-col items-start top-1">
+                    <h4 className="px-1 font-bold text-slate-800 text-medium drop-shadow-xl bg-white/80 rounded-xl">
                       {`#${index + 1} Room-${name}`}
                     </h4>
-                    <h5 className="text-black/80 mt-1 rounded-sm bg-slate-200/40 font-medium text-xs drop-shadow-2xl">{`"${description}"`}</h5>
+                    <p className="mt-1 text-xs font-medium truncate rounded-sm text-black/80 bg-slate-200/40 drop-shadow-2xl max-w-[90%]">
+                      {description}
+                    </p>
                   </CardHeader>
                   <Image
                     removeWrapper
                     alt="Relaxing app background"
-                    className="z-0 w-full h-full object-cover"
+                    className="z-0 object-cover w-full h-full"
                     src={image}
                   />
-                  <CardFooter className="grid absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-                    <div className="grid grid-cols-2 items-center justify-between">
+                  <CardFooter className="absolute bottom-0 z-10 grid bg-black/40 border-t-1 border-default-600 dark:border-default-100">
+                    <div className="grid items-center justify-between grid-cols-2">
                       <div className="">
                         <p className="text-tiny text-white/60">
                           {`${formatToINR(regularprice)}/night`}
@@ -63,7 +65,7 @@ export default function MostPopularRooms({ startDate }: { startDate: string }) {
               </SwiperSlide>
             ))}
           </Swiper>
-          <h2 className="text-slate-200 text-sm mt-2 font-semibold text-center w-full">
+          <h2 className="w-full mt-2 text-sm font-semibold text-center text-slate-200">
             Top Rooms
           </h2>
         </>

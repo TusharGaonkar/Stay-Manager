@@ -1,7 +1,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable object-curly-newline */
 /* eslint-disable import/extensions */
-import { FaIndianRupeeSign } from 'react-icons/fa6';
+import { FaMoneyBillTrendUp } from 'react-icons/fa6';
 import { BsFillPersonCheckFill, BsClipboardDataFill } from 'react-icons/bs';
 import { MdOutlineFamilyRestroom } from 'react-icons/md';
 import { BiMath } from 'react-icons/bi';
@@ -26,7 +26,7 @@ export default function Stats({ startDate }: { startDate: string }) {
       {
         label: 'Total Revenue',
         value: formatToINR(totalRevenue),
-        icon: FaIndianRupeeSign,
+        icon: FaMoneyBillTrendUp,
       },
       {
         label: 'Total Guests Served',

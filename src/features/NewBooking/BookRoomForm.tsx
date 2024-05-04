@@ -60,10 +60,7 @@ export default function BookRoomForm() {
 
   const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
 
-  const roomImage =
-    roomSelected?.image ||
-    'https://vmhotzmovgfkkcbozoey.supabase.co/storage/v1/object/public/rooms/0.19068467337825723-009';
-
+  const roomImage = roomSelected?.image || '/defaultSelectedRoom.jpg';
   const getAvailableRoomsQuery = useQuery({
     queryKey: ['availableRooms', startDate, endDate, numGuests],
     queryFn: async () => getAllRoomsForBooking(startDate, endDate, numGuests),
@@ -153,7 +150,7 @@ export default function BookRoomForm() {
       await new Promise((resolve) => {
         setTimeout(() => {
           resolve(null);
-        }, 3000);
+        }, 2000);
       });
 
       setBookingSuccess(true);
@@ -162,7 +159,7 @@ export default function BookRoomForm() {
 
   useEffect(() => {
     if (bookingSuccess) {
-      const delay = 3000; // 3 seconds
+      const delay = 2000; // 2 seconds
 
       toast({
         variant: 'default',
@@ -179,7 +176,12 @@ export default function BookRoomForm() {
 
   return (
     <>
-      {isLoading && <MoonLoader color="#cdc8ff" size={50} />}
+      {isLoading && (
+        <div className="flex items-center justify-center w-full h-screen">
+          <MoonLoader color="#cdc8ff" size={50} />
+        </div>
+      )}
+
       {isSuccess && (
         <>
           <p className="flex ml-3 text-2xl font-semibold mt-7">
