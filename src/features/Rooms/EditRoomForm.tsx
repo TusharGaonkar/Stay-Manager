@@ -41,12 +41,18 @@ export default function RoomsEditForm({
       discount?: number | null | undefined;
       image?: string;
     }) => {
+      // @ts-ignore
+      if (import.meta.env.VITE_PREVIEW_MODE === 'true') {
+        throw new Error('Editing rooms is disabled in preview mode');
+      }
+
       toast({
         variant: 'default',
         title: 'Editing the room...',
       });
 
       const isImageUpdated = (data?.image?.length ?? 0) > 0;
+
       await editRoomByID(
         data.id,
         // @ts-ignore

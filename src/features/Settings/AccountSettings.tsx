@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/extensions */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form';
@@ -56,6 +57,16 @@ export default function AccountSettings() {
   });
 
   async function onSubmit(newSettingsData: AccountSettingsFormSchema) {
+    // @ts-ignore
+    if (import.meta.env.VITE_PREVIEW_MODE === 'true') {
+      toast({
+        title: 'Error',
+        description: 'Updating account settings is disabled in public preview mode',
+        variant: 'destructive',
+      });
+
+      return;
+    }
     try {
       toast({
         title: 'Updating account settings',
@@ -139,7 +150,7 @@ export default function AccountSettings() {
                     </FormItem>
                   )}
                 />
-                <Button className="mt-6 font-semibold uppercase bg-gradient" disabled>
+                <Button className="mt-6 font-semibold uppercase bg-gradient">
                   Update Password
                 </Button>
               </form>
